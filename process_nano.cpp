@@ -971,7 +971,8 @@ int main(int argc, char **argv)
   else if(inputdir.Contains("RunIIFall17")) year = 2017;
   else if(inputdir.Contains("RunIIAutumn18")) year = 2018;
   if(inputdir.Contains("Run2016")) year = 2016;
-  else if(inputdir.Contains("Run2017")) year = 2017;
+  else if(inputdir.Contains("Run2017")){ year = 2017;
+cout<<inputdir <<" :_inputdir_" <<endl;}
   else if(inputdir.Contains("Run2018")) year = 2018;
   cout << " year: " << year << endl;
 
@@ -979,14 +980,16 @@ int main(int argc, char **argv)
   // w_lumi = xsec[fb] * genWeight / sum(genWeights)
   // => https://twiki.cern.ch/twiki/bin/view/Main/CMGMonojetAnalysisTools
   //vector<TString> files = globVector(Form("/xrootd/%s/*/*.root", inputdir.Data())); 
-  vector<TString> files = getFileListFromFile(Form("flist/%s/flist_%s.txt", year, process.Data())); 
+  cout<<"__1231___"<<endl;
+  vector<TString> files = getFileListFromFile(Form("flist/%d/flist_%s.txt", year, process.Data())); 
+cout << "_11_" << endl;
   vector<TString> files_original = files; 
   for(int ifile=0; ifile<files.size(); ifile++)
   {
     cout << files.at(ifile) << endl;
     if(useCondor) files.at(ifile).ReplaceAll("/xrootd","root://cms-xrdr.private.lo:2094//xrd");
   }
-
+cout << "_22_" << endl;
   float sumWeights = 1;
   int nfiles = files.size();
   int filenumber = 0;

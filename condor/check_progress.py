@@ -6,13 +6,13 @@ import glob
 
 year=sys.argv[1]
 
-outputdir="/xrootd_user/jaehyeok/xrootd/2016v4/2019_10_23/"
+outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2016/"
 if year == "2017":
-	outputdir="/xrootd_user/jaehyeok/xrootd/2017v4/2019_10_23/"
+	outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2017/"
 if year == "2018":
-	outputdir="/xrootd_user/jaehyeok/xrootd/2018v4/2019_10_23/"
+	outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2018/"
 
-flistdir="/cms/ldap_home/jaehyeok/flist/"+year
+flistdir="/cms/ldap_home/yjeong/flist/"+year
 print('------------------------------------------------------------------------------------------------')
 print('%50s %10s %15s %15s' %("tag", "flist", "processed", "completion"))
 print('------------------------------------------------------------------------------------------------')
@@ -25,14 +25,14 @@ for flist in flists:
 	if "outputdir" in tag:
 		continue
 	num_lines = sum(1 for line in open(flistdir+"/"+flist)) # number of files in flist
-	num_processed = sum(1 for line in glob.glob(outputdir+"/*"+tag+"*")) # number of files processed
+	num_processed = sum(1 for line in glob.glob(outputdir+"/*fatjetbaby_"+tag+"*")) # number of files processed
 	print('%50s %10d %15d %15.1f%%' %(tag, num_lines, num_processed, 1.0*num_processed/num_lines*100))
 print('------------------------------------------------------------------------------------------------')
 
 
 # generate list of files that have been processed
 splits = outputdir.split("/")
-list_output_file = open("/cms/ldap_home/jaehyeok/flist/flist_outputdir_"+splits[4]+"_"+splits[5]+".txt", "w")
+list_output_file = open("/cms/ldap_home/yjeong/flist/flist_outputdir_"+splits[4]+"_"+splits[5]+".txt", "w")
 
 lines = os.listdir(outputdir)
 for line in lines:

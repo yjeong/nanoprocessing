@@ -85,7 +85,10 @@ print('-------------------------------------------------------------------------
 flists = os.listdir(flistdir)
 for flist in flists:
 #flist_WW_TuneCP5.txt
-	tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCP5','').replace('_TuneCP2','') # extract tag
+	if year == "2016":
+	 tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCUETP8M1','').replace('_TuneCUETP8M2T4','') # extract tag
+	if year == "2017" or year == "2018":
+	 tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCP5','').replace('_TuneCP2','') # extract tag
 	if "outputdir" in tag:
 		continue
 	num_lines = sum(1 for line in open(flistdir+"/"+flist)) # number of files in flist

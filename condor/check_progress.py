@@ -14,18 +14,21 @@ if year == "2017":
 	#mcfilelist=['F913867E-4152-3D46-BBD4-21577739C5C7_fatjetbaby_WJetsToLNu_HT-800To1200_TuneCP5.root']
 if year == "2018":
 	outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2018/"
-	mcfilelist=['047491A6-AAA2-004A-8238-DF9004A167EA_fatjetbaby_SMS-T1tbs_RPV_mGluino1600_TuneCP2.root',
-		'2133B12E-A851-854D-8CD0-F1E154A919A3_fatjetbaby_SMS-T1tbs_RPV_mGluino1500_TuneCP2.root',
-		'B6BD9D2B-5670-9F42-B1EA-9C075A191AA4_fatjetbaby_SMS-T1tbs_RPV_mGluino1800_TuneCP2.root',
-		'10EA471A-00BC-F549-80A8-CFC66699B539_fatjetbaby_SMS-T1tbs_RPV_mGluino1700_TuneCP2.root',
+'''
+if year == "2018":
+	mcfilelist=[
 		'226A9772-2645-E94B-A8A7-0C91FE200FBA_fatjetbaby_SMS-T1tbs_RPV_mGluino1000_TuneCP2.root',
-		'1265E85C-4BDF-9B44-BF5D-A06C85F9548A_fatjetbaby_SMS-T1tbs_RPV_mGluino1900_TuneCP2.root',
-		'3F75AEC2-852B-1F4C-87F7-A143080B6888_fatjetbaby_SMS-T1tbs_RPV_mGluino1400_TuneCP2.root',
 		'B78F0ADB-A949-4F47-B55F-FC20E1069651_fatjetbaby_SMS-T1tbs_RPV_mGluino1100_TuneCP2.root',
-		'6CC39734-930C-284E-9BFF-AF52607BB321_fatjetbaby_SMS-T1tbs_RPV_mGluino2100_TuneCP2.root',
-		'AE1026D8-0EF7-C841-B4E8-F407434BD728_fatjetbaby_SMS-T1tbs_RPV_mGluino1300_TuneCP2.root',
-		'D2BAC3EC-77AE-3346-903B-597318C437F6_fatjetbaby_SMS-T1tbs_RPV_mGluino2000_TuneCP2.root',
 		'E0997843-0C39-1A45-A0E0-2889DF17950D_fatjetbaby_SMS-T1tbs_RPV_mGluino1200_TuneCP2.root',
+		'AE1026D8-0EF7-C841-B4E8-F407434BD728_fatjetbaby_SMS-T1tbs_RPV_mGluino1300_TuneCP2.root',
+		'3F75AEC2-852B-1F4C-87F7-A143080B6888_fatjetbaby_SMS-T1tbs_RPV_mGluino1400_TuneCP2.root',
+		'2133B12E-A851-854D-8CD0-F1E154A919A3_fatjetbaby_SMS-T1tbs_RPV_mGluino1500_TuneCP2.root',
+		'047491A6-AAA2-004A-8238-DF9004A167EA_fatjetbaby_SMS-T1tbs_RPV_mGluino1600_TuneCP2.root',
+		'10EA471A-00BC-F549-80A8-CFC66699B539_fatjetbaby_SMS-T1tbs_RPV_mGluino1700_TuneCP2.root',
+		'B6BD9D2B-5670-9F42-B1EA-9C075A191AA4_fatjetbaby_SMS-T1tbs_RPV_mGluino1800_TuneCP2.root',
+		'1265E85C-4BDF-9B44-BF5D-A06C85F9548A_fatjetbaby_SMS-T1tbs_RPV_mGluino1900_TuneCP2.root',
+		'D2BAC3EC-77AE-3346-903B-597318C437F6_fatjetbaby_SMS-T1tbs_RPV_mGluino2000_TuneCP2.root',
+		'6CC39734-930C-284E-9BFF-AF52607BB321_fatjetbaby_SMS-T1tbs_RPV_mGluino2100_TuneCP2.root',
 		'7915D234-F191-1944-AC0B-4A3ABDDF2A6B_fatjetbaby_SMS-T1tbs_RPV_mGluino2200_TuneCP2.root',
 		'05D18498-1CF3-D041-800C-E8DD650B9E89_fatjetbaby_ST_t-channel_top_4f_InclusiveDecays_TuneCP5.root',
 		'00EC7DAB-E404-C34B-854B-4CB06884703A_fatjetbaby_ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5.root',
@@ -73,7 +76,7 @@ if year == "2018":
   t.GetEntry()
   print('%50s %26.1f' %(tag[1], t.xsec))
  print('--------------------------------------------------------------------------------------------------------------')
-
+'''
 
 flistdir="/cms/ldap_home/yjeong/flist/"+year
 

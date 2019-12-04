@@ -27,8 +27,8 @@ if year == "2018":
 		'D2BAC3EC-77AE-3346-903B-597318C437F6_fatjetbaby_SMS-T1tbs_RPV_mGluino2000_TuneCP2.root',
 		'E0997843-0C39-1A45-A0E0-2889DF17950D_fatjetbaby_SMS-T1tbs_RPV_mGluino1200_TuneCP2.root',
 		'7915D234-F191-1944-AC0B-4A3ABDDF2A6B_fatjetbaby_SMS-T1tbs_RPV_mGluino2200_TuneCP2.root',
+		'05D18498-1CF3-D041-800C-E8DD650B9E89_fatjetbaby_ST_t-channel_top_4f_InclusiveDecays_TuneCP5.root',
 		'00EC7DAB-E404-C34B-854B-4CB06884703A_fatjetbaby_ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5.root',
-		'FC2A0FD9-78B7-D142-BE63-6873309F8398_fatjetbaby_ST_t-channel_top_4f_InclusiveDecays_TuneCP5.root',
 		'F087BEA4-D52F-594C-961C-6BDD7D06EC6E_fatjetbaby_ST_tW_top_5f_inclusiveDecays_TuneCP5.root',
 		'D6F15CA3-5C99-D74A-8E01-23B1DF2509F7_fatjetbaby_ST_tW_antitop_5f_inclusiveDecays_TuneCP5.root',
 		'DAC962A5-D4F9-1146-B99D-25412A760E98_fatjetbaby_ST_s-channel_4f_leptonDecays_TuneCP5.root',
@@ -61,12 +61,10 @@ if year == "2018":
 		'30F44A1B-E74B-6F4A-9088-1D1170542117_fatjetbaby_TTTT_TuneCP5.root'
 ]
 
-flistdir="/cms/ldap_home/yjeong/flist/"+year
-
 if year == "2018":
- print('--------------------------------cross section check----------------------------------------')
+ print('---------------------------------------------cross section check----------------------------------------------')
  print('%50s %26s' %("tag", "Xsection"))
- print('-------------------------------------------------------------------------------------------')
+ print('--------------------------------------------------------------------------------------------------------------')
  for i, mcname in enumerate(mcfilelist):
   tag=mcname.replace('.root','').replace('_TuneCP5','').replace('_TuneCP2','').split("fatjetbaby_")
   rfname = outputdir+mcname
@@ -74,7 +72,10 @@ if year == "2018":
   t = f.Get("tree")
   t.GetEntry()
   print('%50s %26.1f' %(tag[1], t.xsec))
- print('-------------------------------------------------------------------------------------------')
+ print('--------------------------------------------------------------------------------------------------------------')
+
+
+flistdir="/cms/ldap_home/yjeong/flist/"+year
 
 print('--------------------------------------------------------------------------------------------------------------')
 print('%50s %10s %15s %15s' %("tag", "flist", "processed", "completion"))

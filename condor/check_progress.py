@@ -65,15 +65,15 @@ flistdir="/cms/ldap_home/yjeong/flist/"+year
 
 if year == "2018":
  print('--------------------------------cross section check----------------------------------------')
- print('%50s %30s' %("tag", "Xsection"))
+ print('%50s %26s' %("tag", "Xsection"))
  print('-------------------------------------------------------------------------------------------')
  for i, mcname in enumerate(mcfilelist):
-  tag=mcname.replace('.root','').replace('_fatjetbaby_',' | ')
+  tag=mcname.replace('.root','').replace('_TuneCP5','').replace('_TuneCP2','').split("fatjetbaby_")
   rfname = outputdir+mcname
   f=ROOT.TFile(rfname)
   t = f.Get("tree")
   t.GetEntry()
-  print('%35s %15.1f' %(tag, t.xsec))
+  print('%50s %26.1f' %(tag[1], t.xsec))
  print('-------------------------------------------------------------------------------------------')
 
 print('--------------------------------------------------------------------------------------------------------------')
@@ -84,7 +84,7 @@ print('-------------------------------------------------------------------------
 flists = os.listdir(flistdir)
 for flist in flists:
 #flist_WW_TuneCP5.txt
-	tag=flist.replace('.txt','').replace('flist_','') # extract tag
+	tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCP5','').replace('_TuneCP2','') # extract tag
 	if "outputdir" in tag:
 		continue
 	num_lines = sum(1 for line in open(flistdir+"/"+flist)) # number of files in flist

@@ -14,7 +14,7 @@ if year == "2017":
 	#mcfilelist=['F913867E-4152-3D46-BBD4-21577739C5C7_fatjetbaby_WJetsToLNu_HT-800To1200_TuneCP5.root']
 if year == "2018":
 	outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2018/"
-'''
+
 if year == "2018":
 	mcfilelist=[
 		'226A9772-2645-E94B-A8A7-0C91FE200FBA_fatjetbaby_SMS-T1tbs_RPV_mGluino1000_TuneCP2.root',
@@ -76,7 +76,7 @@ if year == "2018":
   t.GetEntry()
   print('%50s %26.1f' %(tag[1], t.xsec))
  print('--------------------------------------------------------------------------------------------------------------')
-'''
+
 
 flistdir="/cms/ldap_home/yjeong/flist/"+year
 
@@ -88,10 +88,7 @@ print('-------------------------------------------------------------------------
 flists = os.listdir(flistdir)
 for flist in flists:
 #flist_WW_TuneCP5.txt
-	if year == "2016":
-	 tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCUETP8M1','').replace('_TuneCUETP8M2T4','') # extract tag
-	if year == "2017" or year == "2018":
-	 tag=flist.replace('.txt','').replace('flist_','').replace('_TuneCP5','').replace('_TuneCP2','') # extract tag
+	tag=flist.replace('.txt','').replace('flist_','') # extract tag
 	if "outputdir" in tag:
 		continue
 	num_lines = sum(1 for line in open(flistdir+"/"+flist)) # number of files in flist

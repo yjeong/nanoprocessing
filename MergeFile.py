@@ -19,8 +19,8 @@ if year == "2018":
 	outputdir = simple_out+"2018/"
 
 flists = os.listdir(inputdir)
-print('--------------------------------------------------------------------------------------------------------------')
-print('%8s %10s %30s %25s %20s' %(year, "tag", "Number of merged files", "Not merged event", 'Merged event'))
+print('---------------------------------------------------'+year+'-------------------------------------------------------')
+print('%40s %20s %25s %20s' %("tag", "Merged files", "Not merged event", 'Merged event'))
 print('--------------------------------------------------------------------------------------------------------------')
 
 for flist in flists:
@@ -36,5 +36,5 @@ for flist in flists:
 	mc.Merge(outputdir+tag[1]+"_"+nfiles+".root")
 	t2 = mc.GetEntries()
 	t2 = str(t2)
-	print('%19s %30s %25s %20s' %(nfiles, tag[1], t1, t2))
+	print('%40s %20s %25s %20s' %(tag[1], nfiles, t1, t2))
 print('--------------------------------------------------------------------------------------------------------------')

@@ -1,24 +1,40 @@
 import os
 import sys
+import ROOT
 from ROOT import TChain, TSelector, TTree, TH1F, TCanvas, TPad, TStyle, TString
 year=sys.argv[1]
 
-inputdir = "/cms/ldap_home/jaehyeok/nanoprocessing/condor/xrootd/2016v4/2019_12_10/skim_rpvfitnbge0/"
-outputdir = "/cms/scratch/yjeong/RPV_MC/2016/"
+simple_in = "/cms/ldap_home/jaehyeok/nanoprocessing/condor/xrootd/"
+simple_out = "/cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/mc/"
+
+inputdir = simple_in+"2016v4/2019_12_10/skim_rpvfitnbge0/"
+outputdir = simple_out+"2016/"
 
 if year == "2017":
-	inputdir = "/cms/ldap_home/jaehyeok/nanoprocessing/condor/xrootd/2017v4/2019_10_23/skim_rpvfit/"
-	outputdir = "/cms/scratch/yjeong/RPV_MC/2017/"
+	inputdir = simple_in+"2017v4/2019_10_23/skim_rpvfit/"
+	outputdir = simple_out+"2017/"
 
 if year == "2018":
-	inputdir = "/cms/ldap_home/jaehyeok/nanoprocessing/condor/xrootd/2018v4/2019_10_23/skim_rpvfit"
-	outputdir = "/cms/scratch/yjeong/RPV_MC/2018/"
+	inputdir = simple_in+"2018v4/2019_10_23/skim_rpvfit/"
+	outputdir = simple_out+"2018/"
 
 flists = os.listdir(inputdir)
+print('--------------------------------------------------------------------------------------------------------------')
+print('%8s %10s %30s %25s %20s' %(year, "tag", "Number of merged files", "Not merged event", 'Merged event'))
+print('--------------------------------------------------------------------------------------------------------------')
+
 for flist in flists:
 	tag = flist.replace('.root','').replace('_rpvfitnbge0','').split("fatjetbaby_")
 	if year == 2017 or year == 2018:
 		tag = flist.replace('.root','').replace('_rpvfit','').split("fatjetbaby_")
 	mc = TChain("tree")
 	mc.Add(inputdir+"*_fatjetbaby_"+tag[1]+"_rpvfitnbge0"+".root")
-	mc.Merge(outputdir+tag[1]+".root")
+	nfiles=mc.Add(inputdir+"*_fatjetbaby_"+tag[1]+"_rpvfitnbge0"+".root")
+	nfiles=str(nfiles)
+	t1 = mc.GetEntries()
+	t1 = str(t1)
+	mc.Merge(outputdir+tag[1]+"_"+nfiles+".root")
+	t2 = mc.GetEntries()
+	t2 = str(t2)
+	print('%19s %30s %25s %20s' %(nfiles, tag[1], t1, t2))
+print('--------------------------------------------------------------------------------------------------------------')

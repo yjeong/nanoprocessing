@@ -16,14 +16,13 @@ flists = os.listdir(list_dir+"2016/")
 if year == "2017":
 	inputdir = simple_in+"2017v4/2019_10_23/skim_rpvfit/"
 	outputdir = simple_out+"2017/"
-	flists = list_dir+"2017/"
+	flists = os.listdir(list_dir+"2017/")
 
 if year == "2018":
 	inputdir = simple_in+"2018v4/2019_10_23/skim_rpvfit/"
 	outputdir = simple_out+"2018/"
-	flists = list_dir+"2018/"
+	flists = os.listdir(list_dir+"2018/")
 
-#flists = os.listdir(inputdir)
 print('---------------------------------------------------'+year+'-------------------------------------------------------')
 print('%40s %20s %25s %20s' %("tag", "Merged files", "Not merged event", 'Merged event'))
 print('--------------------------------------------------------------------------------------------------------------')

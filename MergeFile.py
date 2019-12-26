@@ -1,8 +1,6 @@
 import os
-import os.path
 import sys
 import ROOT
-import glob
 from ROOT import TChain, TSelector, TTree, TH1F, TCanvas, TPad, TStyle, TString
 year=sys.argv[1]
 
@@ -23,21 +21,27 @@ if year == "2018":
 	outputdir = simple_out+"2018/"
 	flists = os.listdir(inputdir)
 
+process=[]
+
+for i in range(0,len(flists)-1):
+	tag=flists[i].replace('_rpvfitnbge0','').replace('.root','').split('fatjetbaby_')
+	process.append(tag[1])
+
+process = list(set(process))
+
 print('---------------------------------------------------'+year+'-------------------------------------------------------')
 print('%40s %20s %25s %20s' %("tag", "Merged files", "Not merged event", 'Merged event'))
 print('--------------------------------------------------------------------------------------------------------------')
 
-for flist in flists:
-	tag_list = flist.replace('_rpvfitnbge0','').replace('.root','').split('fatjetbaby_')
-	tag = sum(1 for line in glob.glob(outputdir+"*_fatjetbaby_"+tag_list[1]+"*"))
+for flist in process:
 	mc = TChain("tree")
-	mc.Add(inputdir+"*_fatjetbaby_"+tag+"_rpvfitnbge0"+".root")
-	nfiles=mc.Add(inputdir+"*_fatjetbaby_"+tag+"_rpvfitnbge0"+".root")
+	mc.Add(inputdir+"*_fatjetbaby_"+flist+"_rpvfitnbge0"+".root")
+	nfiles=mc.Add(inputdir+"*_fatjetbaby_"+flist+"_rpvfitnbge0"+".root")
 	nfiles=str(nfiles)
 	t1 = mc.GetEntries()
 	t1 = str(t1)
-	mc.Merge(outputdir+tag+"_"+nfiles+".root")
+	mc.Merge(outputdir+flist+"_"+nfiles+".root")
 	t2 = mc.GetEntries()
 	t2 = str(t2)
-	print('%40s %20s %25s %20s' %(num_tag, nfiles, t1, t2))
+	print('%40s %20s %25s %20s' %(flist, nfiles, t1, t2))
 print('--------------------------------------------------------------------------------------------------------------')

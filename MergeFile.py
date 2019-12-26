@@ -8,7 +8,7 @@ simple_in = "/cms/ldap_home/jaehyeok/nanoprocessing/condor/xrootd/"
 simple_out = "/cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/mc_merged/"
 
 inputdir = simple_in+"2016v4/2019_12_10/skim_rpvfitnbge0/"
-outputdir = simple_out+"2016_1/"
+outputdir = simple_out+"2016/"
 flists = os.listdir(inputdir)
 
 if year == "2017":

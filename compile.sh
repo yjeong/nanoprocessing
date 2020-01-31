@@ -12,5 +12,13 @@ g++ process_nano.cpp  `fastjet-config --cxxflags --libs --plugins` `root-config 
 g++ skim.cpp  `root-config --cflags --glibs` -o skim.exe
 
 # copy executables to home directory so that they can be picked up by condor
-cp process_nano.exe /cms/ldap_home/jaehyeok
-cp skim.exe         /cms/ldap_home/jaehyeok
+cp process_nano.exe /cms/ldap_home/yjeong
+cp skim.exe         /cms/ldap_home/yjeong
+cp process_nano.exe /cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/condor/submit_scripts/2016
+cp process_nano.exe /cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/condor/submit_scripts/2017
+cp process_nano.exe /cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/condor/submit_scripts/2018
+
+# make folders for flists
+mkdir -p ~/flist/2016
+mkdir -p ~/flist/2017
+mkdir -p ~/flist/2018

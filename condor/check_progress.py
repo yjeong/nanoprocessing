@@ -3,9 +3,9 @@ import sys
 import os
 import os.path
 import glob
-import ROOT
-from ROOT import TChain, TSelector, TTree, TH1F, TCanvas, TPad, TStyle, TString
-ROOT.gROOT.SetBatch(True)
+#import ROOT
+#from ROOT import TChain, TSelector, TTree, TH1F, TCanvas, TPad, TStyle, TString
+#ROOT.gROOT.SetBatch(True)
 year=sys.argv[1]
 
 outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2016/"
@@ -16,7 +16,7 @@ if year == "2018":
 
 flistdir="/cms/ldap_home/yjeong/flist/"+year
 flists = os.listdir(flistdir)
-
+'''
 print('---------------------------------------------cross section check----------------------------------------------')
 print('%46s %3s %26s' %(year, "tag", "Xsection"))
 print('--------------------------------------------------------------------------------------------------------------')
@@ -27,7 +27,7 @@ for i, mcname in enumerate(flists):
 	mc.GetEntry()
 	print('%50s %26.1f' %(tag, mc.xsec))
 print('--------------------------------------------------------------------------------------------------------------')
-
+'''
 
 print('--------------------------------------------------------------------------------------------------------------')
 print('%46s %3s %10s %15s %15s' %(year, "tag", "flist", "processed", "completion"))

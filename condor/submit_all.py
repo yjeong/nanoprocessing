@@ -9,8 +9,11 @@ year=sys.argv[1]
 #outputdir="root://cms-xrdr.private.lo:2094//xrd/store/user/jaehyeok/2016v4/2019_10_23/"
 outputdir="root://cms-xrdr.private.lo:2094//xrd/store/user/yjeong/nanoprocessing/2016/"
 #outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2016"
-samplelist="samples/samples2016.txt"
-inputmctag="RunIISummer16NanoAODv4"
+#samplelist="samples/samples2016.txt"
+#inputmctag="RunIISummer16NanoAODv4"
+samplelist="samples/samples2016_NanoAODv5.txt"
+inputmctag="RunIISummer16NanoAODv5"
+
 if year == "2017":
 	outputdir="root://cms-xrdr.private.lo:2094//xrd/store/user/yjeong/nanoprocessing/2017/"
 	#outputdir="/xrootd_user/yjeong/xrootd/nanoprocessing/2017"

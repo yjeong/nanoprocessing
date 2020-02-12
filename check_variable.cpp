@@ -1,6 +1,6 @@
 void set_histo_ratio(TH1F *histo_Ratio){
 	histo_Ratio->SetMarkerStyle(20);
-	histo_Ratio->SetMarkerSize(1.2);
+	histo_Ratio->SetMarkerSize(0.6);
 	histo_Ratio->GetYaxis()->SetTitle("Ratio");
 	histo_Ratio->GetYaxis()->SetTitleSize(0.17);
 	histo_Ratio->GetYaxis()->SetTitleOffset(0.2);
@@ -61,7 +61,7 @@ void check_variable(){
 	double xmin[nBranch];
 	double xmax[nBranch];
 	double ymax = 0;
-	int bin = 50;
+	int bin = 20;
 	TString var_name;
 
 	double norm_1 = 1;
@@ -77,15 +77,19 @@ void check_variable(){
 		  if(blist->At(j)->size()>1) name = name + "[0]";
 		  cout<<name<<endl;*/
 		if(xmax[j]==0 || xmin[j]==0){
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+10;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-10;
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+15;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-15;
 		}
-		if(j==33 || j==36 || j==47 || j==44 || j==18 || j==12 || j==24){//pt or mass
+		if(j==33 || j==47 || j==44 || j==18 || j==12 || j==24){//pt or mass
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+1000;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
 		}
 		if(j==29||j==30||j==22){//isolation
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+20;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
+		}
+		if(j==36){
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+250;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
 		}
 
@@ -130,7 +134,7 @@ void check_variable(){
 		set_histo_ratio(heff[j]);
 		heff[j]->GetXaxis()->SetTitle(blist->At(j)->GetName());
 		heff[j]->Divide(h1[j],h2[j]);
-		heff[j]->Draw();
+		heff[j]->Draw("e");
 		c_[j]->SaveAs(outputdir+blist->At(j)->GetName()+".png");
 	}
 }

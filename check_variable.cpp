@@ -12,17 +12,28 @@ void set_histo_ratio(TH1F *histo_Ratio){
 	histo_Ratio->SetAxisRange(0.5,1.5,"y");
 }
 
+void set_legend_style(TLegend *l1){
+	l1->SetFillColor(0);
+	l1->SetLineColor(0);
+	l1->SetLineStyle(kSolid);
+	l1->SetLineWidth(1);
+	l1->SetFillStyle(1001);
+	l1->SetTextFont(42);
+	l1->SetTextSize(0.045);
+}
+
 void check_variable(){
-	const int nBranch = 2;
+	const int nBranch = 15;
 	TString inputdir_1 = "/xrootd_user/jaehyeok/xrootd/2016v4/2019_12_10/skim_rpvfitnbge0/";
 	TString inputdir_2 = "/xrootd_user/yjeong/xrootd/nanoprocessing/2016/";
 
 	TString sample_name_1 = "F25F8B84-587A-B243-B7A6-34AD053DEDC5_fatjetbaby_TT_TuneCUETP8M2T4_rpvfitnbge0";
-	TString sample_name_2 = "000F136A-D9F5-934E-8714-FB807DF9A0A6_fatjetbaby_TT_TuneCUETP8M2T4";
+	TString sample_name_2 = "000F136A-D9F5-934E-8714-FB807DF9A0A6_fatjetbaby_TT_TuneCUETP8M2T4_rpvfitnbge0";
 
 	TString outputdir = "/cms/scratch/yjeong/CMSSW_7_1_0/src/nanoprocessing/plots/";
 
-	TString branch[nBranch] = {"mj12","jets_pt"};
+	TString branch[nBranch] = {"mj12","met","weight","w_btag_csv","w_btag_dcsv","w_pu","w_isr","w_toppt","w_lep","w_lumi","npv","ntrupv","ntrupv_mean","met_phi","ht"};//15
+	//TString branch[nBranch] = {"mj12","met"};
 
 	TH1F *h1[nBranch];
 	TH1F *h2[nBranch];
@@ -35,30 +46,56 @@ void check_variable(){
 
 	TPad *plotpad_[nBranch];
 	TPad *ratiopad_[nBranch];
+	TLegend *l_[nBranch];
 
 	tfile_1 = new TFile(inputdir_1+sample_name_1+".root");
 	mytree_1 = (TTree*)tfile_1->Get("tree");
 	tfile_2 = new TFile(inputdir_2+sample_name_2+".root");
 	mytree_2 = (TTree*)tfile_2->Get("tree");
 
+	/*TObjArray *blist;
+	  blist = mytree_1->GetListOfBranches()->Clone();
+	  blist->GetName();*/
+
+	float xmin[nBranch]={0,};
+	float xmax[nBranch]={0,};
+	double ymax = 0;
+
 	for(int j=0; j<nBranch; j++){
+		l_[j] = new TLegend(0.65,0.54,0.78,0.80);
+		xmax[j] = mytree_1->GetMaximum(branch[j]);
+		xmin[j] = mytree_1->GetMinimum(branch[j]);
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);
 		ratiopad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.1,0.98,0.35);
 		plotpad_[j]->Draw();
 		ratiopad_[j]->Draw();
-		h1[j] = new TH1F(Form("h1_%d",j),branch[j],100,0,2000);
+
+		h1[j] = new TH1F(Form("h1_%d",j),branch[j],100,xmin[j],xmax[j]);
 		mytree_1->Project(Form("h1_%d",j),branch[j]);
-		h2[j] = new TH1F(Form("h2_%d",j),branch[j],100,0,2000);
+		h2[j] = new TH1F(Form("h2_%d",j),branch[j],100,xmin[j],xmax[j]);
 		mytree_2->Project(Form("h2_%d",j),branch[j]);
 		plotpad_[j]->cd();
+
+		ymax = h1[j]->GetMaximum();
+
+		cout<<"xmin :"<<xmin[j]<<", xmax :"<<xmax[j]<<endl;
+
 		h1[j]->SetLineColor(kRed);
 		h2[j]->SetLineColor(kBlue);
+
+		l_[j]->AddEntry(h1[j],"NanoAODv4");
+		l_[j]->AddEntry(h2[j],"NanoAODv5");
+
+		set_legend_style(l_[j]);
+
+		h1[j]->SetMaximum(ymax*1.4);
 		h1[j]->Draw();
 		h2[j]->Draw("histsame");
+		l_[j]->Draw();
 
 		ratiopad_[j]->cd();
-		heff[j] = new TH1F(Form("heff_%d",j),Form(""),100,0,2000);
+		heff[j] = new TH1F(Form("heff_%d",j),Form(""),100,xmin[j],xmax[j]);
 		set_histo_ratio(heff[j]);
 		heff[j]->GetXaxis()->SetTitle(branch[j]);
 		heff[j]->Divide(h1[j],h2[j]);

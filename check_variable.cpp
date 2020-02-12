@@ -24,7 +24,7 @@ void set_legend_style(TLegend *l1){
 
 void check_variable(){
 	TString inputdir_1 = "/xrootd_user/jaehyeok/xrootd/2016v4/2019_12_10/skim_rpvfitnbge0/";
-	TString inputdir_2 = "/xrootd_user/yjeong/xrootd/nanoprocessing/2016/";
+	TString inputdir_2 = "/xrootd_user/yjeong/xrootd/nanoprocessing/2016/skim_rpvfitnbge0/";
 
 	TString sample_name_1 = "F25F8B84-587A-B243-B7A6-34AD053DEDC5_fatjetbaby_TT_TuneCUETP8M2T4_rpvfitnbge0";
 	TString sample_name_2 = "000F136A-D9F5-934E-8714-FB807DF9A0A6_fatjetbaby_TT_TuneCUETP8M2T4_rpvfitnbge0";
@@ -43,12 +43,10 @@ void check_variable(){
 
 	TObjArray *blist;
 	blist = mytree_1->GetListOfBranches();
-	//for(int i=0; i<blist->GetEntries(); i++)cout<<blist->At(i)->GetName()<<endl;
-	//cout<<blist->GetEntries()<<endl;
 
 	//const int nBranch = blist->GetEntries();
 	const int nBranch = 55;
-
+	cout<<"1"<<endl;
 
 	TH1F *h1[nBranch];
 	TH1F *h2[nBranch];
@@ -65,8 +63,13 @@ void check_variable(){
 
 	for(int j=0; j<nBranch; j++){
 		l_[j] = new TLegend(0.65,0.54,0.78,0.80);
+		
+		TString name = blist->At(j)->GetName();
+		if(blist->At(j)->size()>1) name = name + "[0]";
+		cout<<name<<endl;
 		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName());
 		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
+
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);
 		ratiopad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.1,0.98,0.35);

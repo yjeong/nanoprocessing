@@ -61,7 +61,7 @@ void check_variable(){
 	double xmin[nBranch];
 	double xmax[nBranch];
 	double ymax = 0;
-	int bin = 20;
+	int bin = 50;
 	TString var_name;
 
 	double norm_1 = 1;
@@ -77,6 +77,10 @@ void check_variable(){
 		  if(blist->At(j)->size()>1) name = name + "[0]";
 		  cout<<name<<endl;*/
 		if(xmax[j]==0 || xmin[j]==0){
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+6;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-6;
+		}
+		if(j==15){
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+15;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-15;
 		}

@@ -61,19 +61,31 @@ void check_variable(){
 	double xmin[nBranch];
 	double xmax[nBranch];
 	double ymax = 0;
+	int bin = 50;
+	TString var_name;
+
+	double norm_1 = 1;
+	double norm_2 = 1;
 
 	for(int j=0; j<nBranch; j++){
-		l_[j] = new TLegend(0.65,0.54,0.78,0.80);
+		l_[j] = new TLegend(0.65,0.54,0.75,0.80);
+
+		var_name = blist->At(j)->GetName();
+		cout<<"Name: "<<var_name<< endl;
 
 		/*TString name = blist->At(j)->GetName();
 		  if(blist->At(j)->size()>1) name = name + "[0]";
 		  cout<<name<<endl;*/
-		if(j!=33){
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+5;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-5;
+		if(xmax[j]==0 || xmin[j]==0){
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+10;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-10;
 		}
-		else{
+		if(j==33 || j==36 || j==47 || j==44 || j==18 || j==12 || j==24){//pt or mass
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+1000;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
+		}
+		if(j==29||j==30||j==22){//isolation
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+20;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
 		}
 
@@ -83,13 +95,20 @@ void check_variable(){
 		plotpad_[j]->Draw();
 		ratiopad_[j]->Draw();
 
-		h1[j] = new TH1F(Form("h1_%d",j),blist->At(j)->GetName(),100,xmin[j],xmax[j]);
+		h1[j] = new TH1F(Form("h1_%d",j),blist->At(j)->GetName(),bin,xmin[j],xmax[j]);
 		mytree_1->Project(Form("h1_%d",j),blist->At(j)->GetName());
-		h2[j] = new TH1F(Form("h2_%d",j),blist->At(j)->GetName(),100,xmin[j],xmax[j]);
+		h2[j] = new TH1F(Form("h2_%d",j),blist->At(j)->GetName(),bin,xmin[j],xmax[j]);
 		mytree_2->Project(Form("h2_%d",j),blist->At(j)->GetName());
 		plotpad_[j]->cd();
 
-		ymax = h1[j]->GetMaximum();
+		if(j!=15){
+			norm_1 = h1[j]->Integral();
+			h1[j]->Scale(1/norm_1);
+			norm_2 = h2[j]->Integral();
+			h2[j]->Scale(1/norm_2);
+		}
+
+		ymax = h2[j]->GetMaximum();
 
 		cout<<"xmin :"<<xmin[j]<<", xmax :"<<xmax[j]<<endl;
 
@@ -101,13 +120,13 @@ void check_variable(){
 
 		set_legend_style(l_[j]);
 
-		h1[j]->SetMaximum(ymax*1.4);
+		h1[j]->SetMaximum(ymax*1.2);
 		h1[j]->Draw();
 		h2[j]->Draw("histsame");
 		l_[j]->Draw();
 
 		ratiopad_[j]->cd();
-		heff[j] = new TH1F(Form("heff_%d",j),Form(""),100,xmin[j],xmax[j]);
+		heff[j] = new TH1F(Form("heff_%d",j),Form(""),bin,xmin[j],xmax[j]);
 		set_histo_ratio(heff[j]);
 		heff[j]->GetXaxis()->SetTitle(blist->At(j)->GetName());
 		heff[j]->Divide(h1[j],h2[j]);

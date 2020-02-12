@@ -43,10 +43,11 @@ void check_variable(){
 
 	TObjArray *blist;
 	blist = mytree_1->GetListOfBranches();
-
 	//const int nBranch = blist->GetEntries();
+	blist->Print();
+	cout<< blist->GetEntries() <<endl;//55
 	const int nBranch = 55;
-	cout<<"1"<<endl;
+	//const Int_t nBranch = blist->GetEntries();
 
 	TH1F *h1[nBranch];
 	TH1F *h2[nBranch];
@@ -57,18 +58,24 @@ void check_variable(){
 	TPad *ratiopad_[nBranch];
 	TLegend *l_[nBranch];
 
-	float xmin[nBranch]={0,};
-	float xmax[nBranch]={0,};
+	double xmin[nBranch];
+	double xmax[nBranch];
 	double ymax = 0;
 
 	for(int j=0; j<nBranch; j++){
 		l_[j] = new TLegend(0.65,0.54,0.78,0.80);
-		
-		TString name = blist->At(j)->GetName();
-		if(blist->At(j)->size()>1) name = name + "[0]";
-		cout<<name<<endl;
-		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName());
-		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
+
+		/*TString name = blist->At(j)->GetName();
+		  if(blist->At(j)->size()>1) name = name + "[0]";
+		  cout<<name<<endl;*/
+		if(j!=33){
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+5;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-5;
+		}
+		else{
+			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+1000;
+			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
+		}
 
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);

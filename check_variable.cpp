@@ -1,3 +1,5 @@
+#include <typeinfo>
+
 void set_histo_ratio(TH1F *histo_Ratio){
 	histo_Ratio->SetMarkerStyle(20);
 	histo_Ratio->SetMarkerSize(0.6);
@@ -45,9 +47,10 @@ void check_variable(){
 	blist = mytree_1->GetListOfBranches();
 	//const int nBranch = blist->GetEntries();
 	blist->Print();
-	cout<< blist->GetEntries() <<endl;//55
+	//cout<< blist->GetEntries()+3 <<endl;//55
 	const int nBranch = 55;
-	//const Int_t nBranch = blist->GetEntries();
+	const int nBranch__ = blist->GetEntries();
+	cout<< typeid(blist->GetEntries()).name() <<endl;
 
 	TH1F *h1[nBranch];
 	TH1F *h2[nBranch];
@@ -66,6 +69,7 @@ void check_variable(){
 
 	double norm_1 = 1;
 	double norm_2 = 1;
+	double a,b;
 
 	for(int j=0; j<nBranch; j++){
 		l_[j] = new TLegend(0.65,0.54,0.75,0.80);
@@ -73,10 +77,16 @@ void check_variable(){
 		var_name = blist->At(j)->GetName();
 		cout<<"Name: "<<var_name<< endl;
 
-		/*TString name = blist->At(j)->GetName();
-		  if(blist->At(j)->size()>1) name = name + "[0]";
-		  cout<<name<<endl;*/
-		if(xmax[j]==0 || xmin[j]==0){
+		if(xmax[j]==0 || xmin[j]==0) {a=6; b=-6;}
+		if(j==15){a=15;b=-15;}
+		if(j==33 || j==47 || j==44 || j==18 || j==12 || j==24){a=1000;b=0;}
+		if(j==29||j==30||j==22){a=20;b=0;}
+		if(j==36){a=250;b=0;}
+
+		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+a;
+		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())+b;
+
+		/*if(xmax[j]==0 || xmin[j]==0){
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+6;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-6;
 		}
@@ -95,7 +105,7 @@ void check_variable(){
 		if(j==36){
 			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+250;
 			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
-		}
+		}*/
 
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);

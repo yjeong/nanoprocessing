@@ -48,7 +48,7 @@ void check_variable(){
 	//const int nBranch = blist->GetEntries();
 	blist->Print();
 	//cout<< blist->GetEntries()+3 <<endl;//55
-	const int nBranch = 55;
+	const double nBranch = 55;
 	const int nBranch__ = blist->GetEntries();
 	cout<< typeid(blist->GetEntries()).name() <<endl;
 
@@ -85,27 +85,6 @@ void check_variable(){
 
 		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+a;
 		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())+b;
-
-		/*if(xmax[j]==0 || xmin[j]==0){
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+6;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-6;
-		}
-		if(j==15){
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+15;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())-15;
-		}
-		if(j==33 || j==47 || j==44 || j==18 || j==12 || j==24){//pt or mass
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+1000;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
-		}
-		if(j==29||j==30||j==22){//isolation
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+20;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
-		}
-		if(j==36){
-			xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+250;
-			xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
-		}*/
 
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);

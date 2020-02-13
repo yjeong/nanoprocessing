@@ -44,13 +44,13 @@ void check_variable(){
 	mytree_2 = (TTree*)tfile_2->Get("tree");
 
 	TObjArray *blist;
-	blist = mytree_1->GetListOfBranches();
+	blist = mytree_2->GetListOfBranches();
 	//const int nBranch = blist->GetEntries();
 	blist->Print();
-	//cout<< blist->GetEntries()+3 <<endl;//55
-	const double nBranch = 55;
-	const int nBranch__ = blist->GetEntries();
+	cout<< blist->GetEntries() <<endl;//55
 	cout<< typeid(blist->GetEntries()).name() <<endl;
+	const double nBranch = 56;
+	//const int nBranch__ = blist->GetEntries();
 
 	TH1F *h1[nBranch];
 	TH1F *h2[nBranch];
@@ -70,6 +70,7 @@ void check_variable(){
 	double norm_1 = 1;
 	double norm_2 = 1;
 	double a,b;
+	const int x=1;
 
 	for(int j=0; j<nBranch; j++){
 		l_[j] = new TLegend(0.65,0.54,0.75,0.80);
@@ -77,14 +78,18 @@ void check_variable(){
 		var_name = blist->At(j)->GetName();
 		cout<<"Name: "<<var_name<< endl;
 
-		if(xmax[j]==0 || xmin[j]==0) {a=6; b=-6;}
-		if(j==15){a=15;b=-15;}
-		if(j==33 || j==47 || j==44 || j==18 || j==12 || j==24){a=1000;b=0;}
-		if(j==29||j==30||j==22){a=20;b=0;}
-		if(j==36){a=250;b=0;}
+		if(xmax[j]==0 && xmin[j]==0) {a=6; b=-6;}
+		if(j==15+x){a=15;b=-15;}//leps_pdgID
+		if(j==33+x || j==47+x || j==44+x || j==18+x || j==12+x || j==24+x){a=1000;b=0;}//jets_pt, fjets_m, fjets_pt, mus_pt, leps_pt, els_pt
+		if(j==29+x || j==30+x || j==22+x){a=20;b=0;}//els_miniso, els_reliso, mus_miniso
+		if(j==36+x){a=250;b=0;}//jets_m
+		//if(j==7 || j==8)b=0;//w_btag_csv, w_btag_dcsv
+		if(j==11){a=0;b=0;}
 
-		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName())+a;
-		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName())+b;
+		xmax[j] = mytree_2->GetMaximum(blist->At(j)->GetName())+a;
+		xmin[j] = mytree_2->GetMinimum(blist->At(j)->GetName())+b;
+
+		cout<<"xmin :"<<xmin[j]<<", xmax :"<<xmax[j]<<endl;
 
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);
@@ -107,8 +112,6 @@ void check_variable(){
 
 		ymax = h2[j]->GetMaximum();
 
-		cout<<"xmin :"<<xmin[j]<<", xmax :"<<xmax[j]<<endl;
-
 		h1[j]->SetLineColor(kRed);
 		h2[j]->SetLineColor(kBlue);
 
@@ -117,7 +120,7 @@ void check_variable(){
 
 		set_legend_style(l_[j]);
 
-		h1[j]->SetMaximum(ymax*1.2);
+		h1[j]->SetMaximum(ymax*2);
 		h1[j]->Draw();
 		h2[j]->Draw("histsame");
 		l_[j]->Draw();

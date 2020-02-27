@@ -10,10 +10,10 @@ float getXsec(TString process)
 
   // ttbar 
   if(process.Contains("TTJets_Tune"))	xsec = 815.96;
-  if(process.Contains("TTJets_HT-600to800_Tune"))	xsec = 1.61;
-  if(process.Contains("TTJets_HT-800to1200_Tune"))	xsec = 0.663;
-  if(process.Contains("TTJets_HT-1200to2500_Tune"))	xsec = 0.12;
-  if(process.Contains("TTJets_HT-2500toInf_Tune"))	xsec = 0.00143;
+  if(process.Contains("TTJets_HT-600to800_Tune"))	xsec = 2.61537118;
+  if(process.Contains("TTJets_HT-800to1200_Tune"))	xsec = 1.07722318;
+  if(process.Contains("TTJets_HT-1200to2500_Tune"))	xsec = 0.194972521;
+  if(process.Contains("TTJets_HT-2500toInf_Tune"))	xsec = 0.0023234211;
   if(process.Contains("TT_Tune") && !process.Contains("TTTT_Tune"))       xsec = 815.96; 
  
   // wjets
@@ -36,6 +36,7 @@ float getXsec(TString process)
   if(process.Contains("QCD_HT2000toInf_Tune"))  xsec = 25.42;
 
   // DY // kFactor = 1.23, LO+NLO/LO
+  float DY_kFactor = 1.23;
   if(process.Contains("DYJetsToLL_M-10to50_Tune")) xsec = 18610*1.23;//update
   if(process.Contains("DYJetsToLL_M-50_Tune"))     xsec = 4895*1.23;//X
   if(process.Contains("DYJetsToLL_M-50_HT-200to400_Tune"))     xsec = 40.99*1.23;//update

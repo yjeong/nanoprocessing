@@ -9,7 +9,11 @@ float getXsec(TString process)
   float xsec = -0.001; 
 
   // ttbar 
-  if(process.Contains("TTJets_Tune"))               											xsec = 815.96; 
+  if(process.Contains("TTJets_Tune"))	xsec = 815.96;
+  if(process.Contains("TTJets_HT-600to800_Tune"))	xsec = 1.61;
+  if(process.Contains("TTJets_HT-800to1200_Tune"))	xsec = 0.663;
+  if(process.Contains("TTJets_HT-1200to2500_Tune"))	xsec = 0.12;
+  if(process.Contains("TTJets_HT-2500toInf_Tune"))	xsec = 0.00143;
   if(process.Contains("TT_Tune") && !process.Contains("TTTT_Tune"))       xsec = 815.96; 
  
   // wjets

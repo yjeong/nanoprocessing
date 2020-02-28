@@ -68,16 +68,15 @@ void check_variable(){
 	TPad *ratiopad_[nBranch];
 	TLegend *l_[nBranch];
 
-	float xmin[nBranch];
-	float xmax[nBranch];
+	float xmin[nBranch] = {0,};
+	float xmax[nBranch] = {0,};
 	float ymax = 0;
 	int bin = 100;
 	TString var_name;
 
 	double norm_1 = 1;
 	double norm_2 = 1;
-	double a,b;
-	const int x=1;
+	float a=0,b=0;
 	//float w_lumi_ = 0.1;//seperated
 	//float w_lumi_ = 0.05;//seperated 
 	//float w_lumi_ = 0.02;//seperated // x_range: 0.04
@@ -86,13 +85,15 @@ void check_variable(){
 	//float w_lumi_ = 0.008;//seperated
 	//float w_lumi_ = 0.007;//seperated
 	//float w_lumi_ = 0.006;//seperated
-	float w_lumi_ = 0.005;//one line // x_range: 0.01
+	//float w_lumi_ = 0.005;//one line // x_range: 0.01
 	//float w_lumi_ = 0.001;//seperated
 	//float w_lumi_ = 0.0001;//seperated 
-	//float w_lumi_ = 0.00003;//serperated
+	float w_lumi_ = 0.00003;//serperated
 	//float w_lumi_ = 1.2;//serperated
+	//float w_lumi_ = 1;//one line
 
-	double x_range = 0;
+	float x_min[nBranch] = 0;
+	float x_max[nBranch] = 0;
 
 	for(int j=0; j<nBranch; j++){
 		l_[j] = new TLegend(0.65,0.54,0.75,0.80);
@@ -100,21 +101,23 @@ void check_variable(){
 		var_name = blist->At(j)->GetName();
 		cout<<"Name: "<<var_name<< endl;
 
-		if(xmax[j]==0 && xmin[j]==0) {a=3; b=-3;}
-		if(xmax[j]-xmin[j]==0) {a=3; b=-3;}
-		if(j==15+x){a=15;b=-15;}//leps_pdgID
-		if(j==33+x || j==47+x || j==44+x || j==18+x || j==12+x || j==24+x){a=1000;b=0;}//jets_pt, fjets_m, fjets_pt, mus_pt, leps_pt, els_pt
-		if(j==29+x || j==30+x || j==22+x){a=20;b=0;}//els_miniso, els_reliso, mus_miniso
-		if(j==36+x){a=250;b=0;}//jets_m
-		if(j==7 || j==8 || j==38) b=0;//w_btag_csv, w_btag_dcsv, jets_csv
-		if(j==9) {a=w_lumi_;b=-w_lumi_;}//w_lumi
+		xmax[j] = mytree_1->GetMaximum(blist->At(j)->GetName());
+		xmin[j] = mytree_1->GetMinimum(blist->At(j)->GetName());
 
-		xmax[j] = mytree_2->GetMaximum(blist->At(j)->GetName())+a;
-		xmin[j] = mytree_2->GetMinimum(blist->At(j)->GetName())+b;
+		x_max[j] = xmax[j]+a;
+		x_min[j] = xmin[j]+b;
+
+		if(xmax[j]==0 && xmin[j]==0) {a=3; b=-3;}
+		else if(xmax[j]-xmin[j]==0) {a=1; b=-1;}
+		if(j==15){a=15;b=-15;}//leps_pdgID
+		else if(j==33 || j==47 || j==44 || j==18 || j==12 || j==24){a=1000;b=0;}//jets_pt, fjets_m, fjets_pt, mus_pt, leps_pt, els_pt
+		else if(j==29 || j==30 || j==22){a=10;b=0;}//els_miniso, els_reliso, mus_miniso
+		else if(j==36){a=250;b=0;}//jets_m
+		else if(j==6 || j==7 || j==39) b=0;//w_btag_csv, w_btag_dcsv, jets_csv
+		else if(j==8) {a=w_lumi_;b=-w_lumi_;}//w_lumi
 
 		//if(j==9) cout<<"bin_size: "<<(xmax[j]-xmin[j])/bin<<endl;
-		if(j==9) x_range = (xmax[j]-xmin[j]);
-		cout<<"xmin :"<<xmin[j]<<", xmax :"<<xmax[j]<<endl;
+		cout<<"xmin :"<<x_min[j]<<", xmax :"<<x_max[j]<<endl;
 
 		c_[j] = new TCanvas;
 		plotpad_[j] = new TPad(Form("title_%d",j),Form(""),0.02,0.3,0.98,0.98);
@@ -123,9 +126,9 @@ void check_variable(){
 		plotpad_[j]->Draw();
 		ratiopad_[j]->Draw();
 
-		h1[j] = new TH1F(Form("h1_%d",j),tag_name,bin,xmin[j],xmax[j]);
+		h1[j] = new TH1F(Form("h1_%d",j),tag_name,bin,x_min[j],x_max[j]);
 		mytree_1->Project(Form("h1_%d",j),blist->At(j)->GetName());
-		h2[j] = new TH1F(Form("h2_%d",j),tag_name,bin,xmin[j],xmax[j]);
+		h2[j] = new TH1F(Form("h2_%d",j),tag_name,bin,x_min[j],x_max[j]);
 		mytree_2->Project(Form("h2_%d",j),blist->At(j)->GetName());
 		plotpad_[j]->cd();
 
@@ -150,16 +153,15 @@ void check_variable(){
 
 		h1[j]->SetMaximum(ymax*2);
 		h1[j]->Draw();
-		h2[j]->Draw("histsame");
+		h2[j]->Draw("same");
 
 		l_[j]->Draw();
 		ratiopad_[j]->cd();
-		heff[j] = new TH1F(Form("heff_%d",j),Form(""),bin,xmin[j],xmax[j]);
+		heff[j] = new TH1F(Form("heff_%d",j),Form(""),bin,x_min[j],x_max[j]);
 		set_histo_ratio(heff[j]);
 		heff[j]->GetXaxis()->SetTitle(blist->At(j)->GetName());
 		heff[j]->Divide(h2[j],h1[j]);
 		heff[j]->Draw("e");
 		c_[j]->SaveAs(outputdir+tag_name+"_"+blist->At(j)->GetName()+".png");
 	}
-	cout<<"x_range: "<<x_range<<endl;
 }

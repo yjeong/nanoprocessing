@@ -4,6 +4,7 @@
 //          jae.hyeok.yoo@cern.ch
 //          2019.10.28
 // ------------------------------------
+// command: ./skim.exe /xrootd_user/jaehyeok/xrootd/2016v4/2019_12_10/processed/ rpvfitnbge0
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -138,6 +139,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   Float_t     btagWeight_CSVV2 = 1;
   Float_t     genWeight        = 1;
   // MC 
+  UInt_t  nGenPart=0;
   Float_t GenPart_eta[500];  
   Float_t GenPart_mass[500]; 
   Float_t GenPart_phi[500];  
@@ -215,6 +217,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   if(!isData)
   {
     tree->SetBranchAddress("genWeight",           &genWeight);
+    tree->SetBranchAddress("nGenPart",	          &nGenPart);
     tree->SetBranchAddress("GenPart_eta",         &GenPart_eta);
     tree->SetBranchAddress("GenPart_mass",        &GenPart_mass);
     tree->SetBranchAddress("GenPart_pt",          &GenPart_pt);
@@ -320,10 +323,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   float w_btag_csv  =1;
   float w_btag_dcsv =1;
   float w_pu        =1;
-  float w_isr       =1;
+  float w_lumi      =1;
   float w_toppt     =1;
   float w_lep       =1;
-  float w_lumi      =1;
+  float w_isr       =1;
   //std::vector<float> w_pdf;
   //float eff_trig;
   int npv           =-1;
@@ -396,6 +399,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   //std::vector<int>   jets_fjet_index;
   std::vector<int>   jets_hflavor;
 
+  // GenParticle
+  int ngen;
+  std::vector<float> gen_pt;
+  std::vector<float> gen_eta;
+  std::vector<float> gen_phi;
+  std::vector<float> gen_m;
+  std::vector<int> gen_PartIdxMother;
+  std::vector<int> gen_pdgId;
+  std::vector<int> gen_status;
+  std::vector<int> gen_statusFlags;
 
   //    std::vector<float> dr_bb;
   //Fat Jets   
@@ -447,6 +460,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("w_lumi",    	    &w_lumi);
   babyTree_->Branch("w_pu",      	    &w_pu);
   babyTree_->Branch("xsec",		&xsec);
+  babyTree_->Branch("w_isr",		&w_isr);
   // leptons 
   babyTree_->Branch("nleps",       	  &nleps);    
   babyTree_->Branch("leps_pt",       	&leps_pt);    
@@ -488,6 +502,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("fjets_phi",       	&fjets_phi);    
   babyTree_->Branch("fjets_m",         	&fjets_m);    
   babyTree_->Branch("fjets_nconst",    	&fjets_nconst);    
+  // GenParticles
+  babyTree_->Branch("ngen",		&ngen);
+  babyTree_->Branch("gen_pt",		&gen_pt);
+  babyTree_->Branch("gen_eta",		&gen_eta);
+  babyTree_->Branch("gen_phi",		&gen_phi);
+  babyTree_->Branch("gen_m",		&gen_m);
+  babyTree_->Branch("gen_PartIdxMother",&gen_PartIdxMother);
+  babyTree_->Branch("gen_pdgId",	&gen_pdgId);
+  babyTree_->Branch("gen_status",	&gen_status);
+  babyTree_->Branch("gen_statusFlags",	&gen_statusFlags);
   // filters
   babyTree_->Branch("pass",    	&pass);    
   // triggers 
@@ -540,6 +564,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     w_btag_csv    =    1;
     w_btag_dcsv   =    1;
     w_pu          =    1;
+    w_isr	  =    1;
     // leptons 
     nleps      =   0;       	  
     leps_pt.clear();       	
@@ -581,6 +606,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     fjets_phi.clear();
     fjets_m.clear();
     fjets_nconst.clear();
+    //
+    ngen = 0;
+    gen_pt.clear();
+    gen_eta.clear();
+    gen_phi.clear();
+    gen_m.clear();
+    gen_PartIdxMother.clear();
+    gen_pdgId.clear();
+    gen_status.clear();
+    gen_statusFlags.clear();
     //    
     pass=true;
     //
@@ -689,6 +724,18 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       if(!isData) w_btag_dcsv *= getBtagWeight(calibreader, Jet_pt[iJ], Jet_eta[iJ], Jet_hadronFlavour[iJ], Jet_btagDeepB[iJ]);
     }
 
+    for(int iGen = 0; iGen < nGenPart; iGen++)
+    {
+      gen_pt.push_back(GenPart_pt[iGen]);
+      gen_eta.push_back(GenPart_eta[iGen]);
+      gen_phi.push_back(GenPart_phi[iGen]);
+      gen_m.push_back(GenPart_mass[iGen]);
+      gen_pdgId.push_back(GenPart_pdgId[iGen]);
+      gen_PartIdxMother.push_back(GenPart_genPartIdxMother[iGen]);
+      gen_status.push_back(GenPart_status[iGen]);
+      gen_statusFlags.push_back(GenPart_statusFlags[iGen]);
+      ngen++;
+    }
     // 
     // Fatjet reconstruction 
     // 
@@ -802,6 +849,45 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       }
     }
 
+    if(!isData){//number of ISR
+      int nisr(0);
+      TLorentzVector JetLV_, GenLV_; 
+      for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
+        bool matched = false;
+
+        JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
+
+        for(size_t imc(0); imc < gen_pt.size(); imc++){
+	  if(matched) break;
+	  int momid = abs(GenPart_genPartIdxMother[imc]);
+
+          GenLV_.SetPtEtaPhiM(gen_pt.at(imc), gen_eta.at(imc), gen_phi.at(imc), gen_m.at(imc));
+
+	  if(GenPart_status[imc]!=23 || abs(GenPart_pdgId[imc])>5) continue;
+
+	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;
+	  double dR = JetLV_.DeltaR(GenLV_);
+	  if(dR<0.3){
+	    matched = true;
+	    break;
+	  }
+        }
+        if(!matched){
+	  nisr++;
+        }
+      }
+      const float isr_norm_tt = 1.117;
+      float isr_wgt = -999.;
+      if(nisr==0)       isr_wgt = 1.;
+      else if(nisr==1)  isr_wgt = 0.920;
+      else if(nisr==2)  isr_wgt = 0.821;
+      else if(nisr==3)  isr_wgt = 0.715;
+      else if(nisr==4)  isr_wgt = 0.662;
+      else if(nisr==5)  isr_wgt = 0.561;
+      else if(nisr>=6)  isr_wgt = 0.511;
+      w_isr = isr_wgt*isr_norm_tt;
+    }
+
     // 
     // weights 
     //
@@ -818,6 +904,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       w_btag_dcsv = 1;
       w_lumi      = 1;
       w_pu        = 1;
+      w_isr	  = 1;
     }
     weight    = w_btag_dcsv * w_lumi * w_pu;
 

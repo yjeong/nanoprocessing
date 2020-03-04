@@ -866,7 +866,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	  if(GenPart_status[imc]!=23 || abs(GenPart_pdgId[imc])>5) continue;
 
 	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;
-	  double dR = JetLV_.DeltaR(GenLV_);
+	  float dR = JetLV_.DeltaR(GenLV_);
 	  if(dR<0.3){
 	    matched = true;
 	    break;

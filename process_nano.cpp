@@ -891,16 +891,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       float w_isr = 1.;
       const float isr_norm_tt =1.117;
       float isr_wgt     = -999.;
-      if(nisr==0)       {isr_wgt = 1.; nisr_tr = nisr;}
-      else if(nisr==1)  {isr_wgt = 0.920; nisr_tr = nisr;}
-      else if(nisr==2)  {isr_wgt = 0.821; nisr_tr = nisr;}
-      else if(nisr==3)  {isr_wgt = 0.715; nisr_tr = nisr;}
-      else if(nisr==4)  {isr_wgt = 0.662; nisr_tr = nisr;}
-      else if(nisr==5)  {isr_wgt = 0.561; nisr_tr = nisr;}
-      else if(nisr>=6)  {isr_wgt = 0.511; nisr_tr = nisr;}
+      if(nisr==0)       {isr_wgt = 1.; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr==1)  {isr_wgt = 0.920; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr==2)  {isr_wgt = 0.821; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr==3)  {isr_wgt = 0.715; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr==4)  {isr_wgt = 0.662; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr==5)  {isr_wgt = 0.561; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
+      else if(nisr>=6)  {isr_wgt = 0.511; nisr_tr = nisr; isr_wgt_tr = isr_wgt;}
       w_isr = isr_wgt*isr_norm_tt;
       w_isr_tr = w_isr;
-      isr_wgt_tr = isr_wgt;
+      //isr_wgt_tr = isr_wgt;
       isr_norm_tt_tr = isr_norm_tt;
     }
 

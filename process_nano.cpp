@@ -902,7 +902,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       w_isr_tr = w_isr;
       isr_wgt_tr = isr_wgt;
       isr_norm_tt_tr = isr_norm_tt;
-      nisr_tr = nisr;
     }
 
     // 

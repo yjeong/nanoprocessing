@@ -863,9 +863,23 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
 
+      bool jetid = true;
+      bool jetislep = false;
+
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
+        if(year==2016 && jets_id.at(ijet)<3 ) jetid=false; // tight Id
+        if(year>=2017 && jets_id.at(ijet)<2 ) jetid=false; // tight Id
+	jets_id.push_back(jetid);
+
+        jetislep = jetIsLepton(jets_eta.at(ijet), jets_phi.at(ijet), leps_eta, leps_phi);
+        jets_islep.push_back(jetislep);
+
         bool matched = false;
+	if(jets_pt.at(ijet)<30) continue;
+	if(abs(jets_eta.at(ijet))>2.4) continue;
+	if(!jetid) continue;
+	if(jetislep) continue;
 
         JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
 
@@ -891,15 +905,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       float w_isr = 1.;
       const float isr_norm_tt =1.117;
       float isr_wgt     = -999.;
-      if(nisr==0)       {isr_wgt = 1.; nisr_tr = nisr;}
-      else if(nisr==1)  {isr_wgt = 0.920; nisr_tr = nisr;}
-      else if(nisr==2)  {isr_wgt = 0.821; nisr_tr = nisr;}
-      else if(nisr==3)  {isr_wgt = 0.715; nisr_tr = nisr;}
-      else if(nisr==4)  {isr_wgt = 0.662; nisr_tr = nisr;}
-      else if(nisr==5)  {isr_wgt = 0.561; nisr_tr = nisr;}
-      else if(nisr>=6)  {isr_wgt = 0.511; nisr_tr = nisr;}
+      if(nisr==0)       isr_wgt = 1.; 
+      else if(nisr==1)  isr_wgt = 0.920; 
+      else if(nisr==2)  isr_wgt = 0.821; 
+      else if(nisr==3)  isr_wgt = 0.715; 
+      else if(nisr==4)  isr_wgt = 0.662; 
+      else if(nisr==5)  isr_wgt = 0.561; 
+      else if(nisr>=6)  isr_wgt = 0.511; 
       w_isr = isr_wgt*isr_norm_tt;
       w_isr_tr = w_isr;
+      nisr_tr = nisr;
       isr_wgt_tr = isr_wgt;
       isr_norm_tt_tr = isr_norm_tt;
     }

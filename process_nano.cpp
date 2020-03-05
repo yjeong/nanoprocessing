@@ -326,7 +326,11 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   float w_lumi      =1;
   float w_toppt     =1;
   float w_lep       =1;
-  float w_isr       =1;
+  float w_isr_tr    =0;
+  float isr_wgt_tr  =0;
+  float isr_norm_tt_tr =0;
+  int nisr_tr = 0;
+
   //std::vector<float> w_pdf;
   //float eff_trig;
   int npv           =-1;
@@ -460,7 +464,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("w_lumi",    	    &w_lumi);
   babyTree_->Branch("w_pu",      	    &w_pu);
   babyTree_->Branch("xsec",		&xsec);
-  babyTree_->Branch("w_isr",		&w_isr);
+  babyTree_->Branch("w_isr_tr",		&w_isr_tr);
+  babyTree_->Branch("isr_wgt_tr",	&isr_wgt_tr);
+  babyTree_->Branch("isr_norm_tt_tr",	&isr_norm_tt_tr);
+  babyTree_->Branch("nisr_tr",		&nisr_tr);
   // leptons 
   babyTree_->Branch("nleps",       	  &nleps);    
   babyTree_->Branch("leps_pt",       	&leps_pt);    
@@ -564,7 +571,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     w_btag_csv    =    1;
     w_btag_dcsv   =    1;
     w_pu          =    1;
-    w_isr	  =    1;
+    w_isr_tr	  =    1;
+    isr_wgt_tr	  =    1;
+    isr_norm_tt_tr=    1;
+    nisr_tr	  =    0;
     // leptons 
     nleps      =   0;       	  
     leps_pt.clear();       	
@@ -849,8 +859,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       }
     }
 
-    if(!isData){//number of ISR
+    if(!isData){//number of ISR-->TTbar_Madgraph, signal.
+      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
+
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
         bool matched = false;
@@ -859,11 +871,11 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 
         for(size_t imc(0); imc < gen_pt.size(); imc++){
 	  if(matched) break;
-	  int momid = abs(GenPart_genPartIdxMother[imc]);
+	  int momid = abs(gen_PartIdxMother.at(imc));
 
           GenLV_.SetPtEtaPhiM(gen_pt.at(imc), gen_eta.at(imc), gen_phi.at(imc), gen_m.at(imc));
 
-	  if(GenPart_status[imc]!=23 || abs(GenPart_pdgId[imc])>5) continue;
+	  if(gen_statusFlags.at(imc)!=7 || abs(gen_pdgId.at(imc))>5) continue;//Flag==7
 
 	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;
 	  float dR = JetLV_.DeltaR(GenLV_);
@@ -876,16 +888,21 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	  nisr++;
         }
       }
-      const float isr_norm_tt = 1.117;
-      float isr_wgt = -999.;
-      if(nisr==0)       isr_wgt = 1.;
-      else if(nisr==1)  isr_wgt = 0.920;
-      else if(nisr==2)  isr_wgt = 0.821;
-      else if(nisr==3)  isr_wgt = 0.715;
-      else if(nisr==4)  isr_wgt = 0.662;
-      else if(nisr==5)  isr_wgt = 0.561;
-      else if(nisr>=6)  isr_wgt = 0.511;
+      float w_isr = 1.;
+      const float isr_norm_tt =1.117;
+      float isr_wgt     = -999.;
+      if(nisr==0)       {isr_wgt = 1.; nisr_tr = nisr;}
+      else if(nisr==1)  {isr_wgt = 0.920; nisr_tr = nisr;}
+      else if(nisr==2)  {isr_wgt = 0.821; nisr_tr = nisr;}
+      else if(nisr==3)  {isr_wgt = 0.715; nisr_tr = nisr;}
+      else if(nisr==4)  {isr_wgt = 0.662; nisr_tr = nisr;}
+      else if(nisr==5)  {isr_wgt = 0.561; nisr_tr = nisr;}
+      else if(nisr>=6)  {isr_wgt = 0.511; nisr_tr = nisr;}
       w_isr = isr_wgt*isr_norm_tt;
+      w_isr_tr = w_isr;
+      isr_wgt_tr = isr_wgt;
+      isr_norm_tt_tr = isr_norm_tt;
+      nisr_tr = nisr;
     }
 
     // 
@@ -904,7 +921,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       w_btag_dcsv = 1;
       w_lumi      = 1;
       w_pu        = 1;
-      w_isr	  = 1;
     }
     weight    = w_btag_dcsv * w_lumi * w_pu;
 

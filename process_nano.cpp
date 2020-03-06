@@ -535,6 +535,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   //  (2) Bin Entry is the sum over energies of PF candidates in a given bin  
   // 
   TH2F *h2 = new TH2F("h2","h2", 115, -5.0, 5.0, 72, -1*TMath::Pi(), TMath::Pi());
+  TH2F *h3 = new TH2F("h3","nisr vs njets",10,0,10,22,0,22);
 
   // 
   // Loop over entries
@@ -909,6 +910,9 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       isr_wgt_tr = isr_wgt;
       isr_norm_tt_tr = isr_norm_tt;
     }
+    h3->Fill(nisr_tr,njets);
+    h3->GetXaxis()->SetTitle("nisr");
+    h3->GetYaxis()->SetTitle("njet");
 
     // 
     // weights 
@@ -1035,6 +1039,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   {
     babyFile_->cd();
     babyTree_->Write();
+    h3->Write();
     babyFile_->Close();
   }
 

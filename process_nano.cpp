@@ -863,14 +863,13 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
 
-      bool jetid = true;
-      bool jetislep = false;
-
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
+        bool jetislep = false;
+        /*bool jetid = true;
         if(year==2016 && jets_id.at(ijet)<3 ) jetid=false; // tight Id
         if(year>=2017 && jets_id.at(ijet)<2 ) jetid=false; // tight Id
-	jets_id.push_back(jetid);
+	//jets_id.push_back(jetid);*/
 
         jetislep = jetIsLepton(jets_eta.at(ijet), jets_phi.at(ijet), leps_eta, leps_phi);
         jets_islep.push_back(jetislep);
@@ -878,8 +877,8 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
         bool matched = false;
 	if(jets_pt.at(ijet)<30) continue;
 	if(abs(jets_eta.at(ijet))>2.4) continue;
-	if(!jetid) continue;
-	if(jetislep) continue;
+	if(!(jets_id.at(ijet)==0)) continue;
+	if(jets_islep.at(ijet)==true) continue;
 
         JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
 

@@ -871,14 +871,14 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
         if(year>=2017 && jets_id.at(ijet)<2 ) jetid=false; // tight Id
 	//jets_id.push_back(jetid);*/
 
-        jetislep = jetIsLepton(jets_eta.at(ijet), jets_phi.at(ijet), leps_eta, leps_phi);
-        jets_islep.push_back(jetislep);
+        //jetislep = jetIsLepton(jets_eta.at(ijet), jets_phi.at(ijet), leps_eta, leps_phi);
+        //jets_islep.push_back(jetislep);
 
         bool matched = false;
 	if(jets_pt.at(ijet)<30) continue;
 	if(abs(jets_eta.at(ijet))>2.4) continue;
 	if(!(jets_id.at(ijet)==0)) continue;
-	if(jets_islep.at(ijet)==true) continue;
+	if(!(jets_islep.at(ijet)==0)) continue;
 
         JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
 

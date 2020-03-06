@@ -865,14 +865,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
-        bool jetislep = false;
-        /*bool jetid = true;
-        if(year==2016 && jets_id.at(ijet)<3 ) jetid=false; // tight Id
-        if(year>=2017 && jets_id.at(ijet)<2 ) jetid=false; // tight Id
-	//jets_id.push_back(jetid);*/
-
-        //jetislep = jetIsLepton(jets_eta.at(ijet), jets_phi.at(ijet), leps_eta, leps_phi);
-        //jets_islep.push_back(jetislep);
 
         bool matched = false;
 	if(jets_pt.at(ijet)<30) continue;

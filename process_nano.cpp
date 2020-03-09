@@ -536,6 +536,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   // 
   TH2F *h2 = new TH2F("h2","h2", 115, -5.0, 5.0, 72, -1*TMath::Pi(), TMath::Pi());
   TH2F *h3 = new TH2F("h3","nisr vs njets",10,0,10,22,0,22);
+  TH1F *histo_dR = new TH1F("histo_dR","DeltaR recoJet vs GenJet",50,0,10);
 
   // 
   // Loop over entries
@@ -863,10 +864,9 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     if(!isData){//number of ISR-->TTbar_Madgraph, signal.
       if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
-
+      //float minDR = 999.;
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
-
         bool matched = false;
 	if(jets_pt.at(ijet)<30) continue;
 	if(abs(jets_eta.at(ijet))>2.4) continue;
@@ -879,21 +879,25 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	  if(matched) break;
 	  int momid = abs(gen_PartIdxMother.at(imc));
 
+	  if(abs(gen_pdgId.at(imc))>5) continue;
+	  if(abs(gen_status.at(imc))!=23) continue;
+	  //if(gen_statusFlags.at(imc)!=7 || abs(gen_pdgId.at(imc))>5) continue;//pdgId<5: quark from genParticle. GenPart_statusFlags gen status flags stored bitwise, bits are: 0 : isPrompt, 1 : isDecayedLeptonHadron, 2 : isTauDecayProduct, 3 : isPromptTauDecayProduct, 4 : isDirectTauDecayProduct, 5 : isDirectPromptTauDecayProduct, 6 : isDirectHadronDecayProduct, 7 : isHardProcess, 8 : fromHardProcess, 9 : isHardProcessTauDecayProduct, 10 : isDirectHardProcessTauDecayProduct, 11 : fromHardProcessBeforeFSR, 12 : isFirstCopy, 13 : isLastCopy, 14 : isLastCopyBeforeFSR,  : 0 at: 0x7f9e93685030
+
+	  //GenParticle Status: 0: null entry, 1: particle not decayed or fragmented, represents the final state as given by the generator, 2: decayed or fragmented entry.
+	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;//6: tau, 23: Z boson, 24: W boson, 25: Higgs, ---> matching condition is final state Jets.
           GenLV_.SetPtEtaPhiM(gen_pt.at(imc), gen_eta.at(imc), gen_phi.at(imc), gen_m.at(imc));
-
-	  if(gen_statusFlags.at(imc)!=7 || abs(gen_pdgId.at(imc))>5) continue;//Flag==7
-
-	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;
-	  float dR = JetLV_.DeltaR(GenLV_);
+	  float dR = JetLV_.DeltaR(GenLV_);//dR=sqrt(dphi^2+deta^2)
 	  if(dR<0.3){
 	    matched = true;
 	    break;
 	  }
+	  //if(ijet==1 && minDR>dR){minDR = dR; histo_dR->Fill(minDR);}
+	  if(ijet==1) histo_dR->Fill(dR);
         }
-        if(!matched){
-	  nisr++;
-        }
+        if(!matched) nisr++;//--> not matched with final state.
       }
+      histo_dR->GetXaxis()->SetTitle("dR distribution");
+
       float w_isr = 1.;
       const float isr_norm_tt =1.117;
       float isr_wgt     = -999.;
@@ -1040,6 +1044,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     babyFile_->cd();
     babyTree_->Write();
     h3->Write();
+    histo_dR->Write();
     babyFile_->Close();
   }
 

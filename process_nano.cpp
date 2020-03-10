@@ -345,6 +345,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   bool stitch;
   bool pass=true;
   bool fromGS;
+  bool matched_tr;
   /*
   //MC   
   int ntruleps;
@@ -468,6 +469,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("isr_wgt_tr",	&isr_wgt_tr);
   babyTree_->Branch("isr_norm_tt_tr",	&isr_norm_tt_tr);
   babyTree_->Branch("nisr_tr",		&nisr_tr);
+  babyTree_->Branch("matched_tr",	&matched_tr);
   // leptons 
   babyTree_->Branch("nleps",       	  &nleps);    
   babyTree_->Branch("leps_pt",       	&leps_pt);    
@@ -891,6 +893,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	  float dR = JetLV_.DeltaR(GenLV_);//dR=sqrt(dphi^2+deta^2)
 	  if(dR<0.3){
 	    matched = true;
+	    matched_tr = matched;
 	    //break;
 	  }
 	  histo_dR->Fill(dR);

@@ -864,7 +864,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     if(!isData){//number of ISR-->TTbar_Madgraph, signal.
       if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
-      //float minDR = 999.;
+      float minDR = 999.;
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
         bool matched = false;
@@ -891,8 +891,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	    matched = true;
 	    break;
 	  }
-	  //if(ijet==1 && minDR>dR){minDR = dR; histo_dR->Fill(minDR);}
-	  if(ijet==1) histo_dR->Fill(dR);
+	  if(ijet==1 && minDR>dR){minDR = dR; histo_dR->Fill(minDR);}
         }
         if(!matched) nisr++;//--> not matched with final state.
       }

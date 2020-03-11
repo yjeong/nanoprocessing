@@ -883,12 +883,12 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 
 	  if(abs(gen_pdgId.at(imc))>5) continue;
 	  //if(abs(gen_status.at(imc))!=23) continue;//21-29: particles of the hardest subprocess, 23: outgoing
-	  //if(gen_statusFlags.at(imc) & (1<<7)==1<<7 || abs(gen_pdgId.at(imc))>5) continue;//pdgId<5: quark from genParticle. GenPart_statusFlags gen status flags stored bitwise, bits are: 0 : isPrompt, 1 : isDecayedLeptonHadron, 2 : isTauDecayProduct, 3 : isPromptTauDecayProduct, 4 : isDirectTauDecayProduct, 5 : isDirectPromptTauDecayProduct, 6 : isDirectHadronDecayProduct, 7 : isHardProcess, 8 : fromHardProcess, 9 : isHardProcessTauDecayProduct, 10 : isDirectHardProcessTauDecayProduct, 11 : fromHardProcessBeforeFSR, 12 : isFirstCopy, 13 : isLastCopy, 14 : isLastCopyBeforeFSR,  : 0 at: 0x7f9e93685030
+	  //if(gen_statusFlags.at(imc)==257 || abs(gen_pdgId.at(imc))>5) continue;//pdgId<5: quark from genParticle. GenPart_statusFlags gen status flags stored bitwise, bits are: 0 : isPrompt, 1 : isDecayedLeptonHadron, 2 : isTauDecayProduct, 3 : isPromptTauDecayProduct, 4 : isDirectTauDecayProduct, 5 : isDirectPromptTauDecayProduct, 6 : isDirectHadronDecayProduct, 7 : isHardProcess, 8 : fromHardProcess, 9 : isHardProcessTauDecayProduct, 10 : isDirectHardProcessTauDecayProduct, 11 : fromHardProcessBeforeFSR, 12 : isFirstCopy, 13 : isLastCopy, 14 : isLastCopyBeforeFSR,  : 0 at: 0x7f9e93685030
 
-		//cout<<"Flags: "<< gen_statusFlags.at(imc) << endl;
+	//cout<<"Flags: "<< gen_statusFlags.at(imc)==257 << endl;
 
 	  //GenParticle Status: 0: null entry, 1: particle not decayed or fragmented, represents the final state as given by the generator, 2: decayed or fragmented entry.
-	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;//6: tau, 23: Z boson, 24: W boson, 25: Higgs, ---> matching condition is final state Jets.
+	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;//6: top, 23: Z boson, 24: W boson, 25: Higgs, 1e6<: SUSY particle ---> matching condition is final state Jets.
           GenLV_.SetPtEtaPhiM(gen_pt.at(imc), gen_eta.at(imc), gen_phi.at(imc), gen_m.at(imc));
 	  float dR = JetLV_.DeltaR(GenLV_);//dR=sqrt(dphi^2+deta^2)
 	  if(dR<0.3){

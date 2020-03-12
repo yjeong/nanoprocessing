@@ -870,46 +870,32 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
         bool matched = false;
-	int gen_mother = 999999;
 	if(jets_pt.at(ijet)<30) continue;
 	if(abs(jets_eta.at(ijet))>2.4) continue;
 	if(jets_id.at(ijet)==0) continue;
 	if(jets_islep.at(ijet)==1) continue;
 
 	/*if(jets_pt.at(iJ)<30)    continue;
-     	if(abs(Jet_eta[iJ])>2.4) continue;
-     	if(!jetid)               continue;
-      	if(jetislep)             continue;*/
+     	if(abs(Jet_eta[iJ])>2.4)   continue;
+     	if(!jetid)                 continue;
+      	if(jetislep)               continue;*/
 
         JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
 
         for(size_t imc(0); imc < gen_pt.size(); imc++){
-	  //if(matched) break;
-	  //int momid = abs(gen_pdgId.at(gen_PartIdxMother.at(imc)));
-	  int momid = abs(gen_PartIdxMother.at(imc));
-	  int gen_Id = abs(gen_pdgId.at(imc));
-
+	  if((gen_PartIdxMother.at(imc))==-1) continue;
+	  int momid = abs(gen_pdgId.at(gen_PartIdxMother.at(imc)));
 	
-	  if(gen_Id==6 || gen_Id==23 || gen_Id==24 || gen_Id==25 || gen_Id>1e6){
-	    gen_mother = momid;
-	    cout <<"mother Index : " << gen_Id <<endl;
-	  }
-
-	  if(gen_mother==999999 && !(gen_Id==6 || gen_Id==23 || gen_Id==24 || gen_Id==25 || gen_Id>1e6)) continue;
-	
-	  //if(abs(gen_status.at(imc))!=23) continue;//21-29: particles of the hardest subprocess, 23: outgoing
 	  if(!((gen_statusFlags.at(imc)>>7)&1) || abs(gen_pdgId.at(imc))>5) continue;//pdgId<5: quark from genParticle. GenPart_statusFlags gen status flags stored bitwise, bits are: 0 : isPrompt, 1 : isDecayedLeptonHadron, 2 : isTauDecayProduct, 3 : isPromptTauDecayProduct, 4 : isDirectTauDecayProduct, 5 : isDirectPromptTauDecayProduct, 6 : isDirectHadronDecayProduct, 7 : isHardProcess, 8 : fromHardProcess, 9 : isHardProcessTauDecayProduct, 10 : isDirectHardProcessTauDecayProduct, 11 : fromHardProcessBeforeFSR, 12 : isFirstCopy, 13 : isLastCopy, 14 : isLastCopyBeforeFSR,  : 0 at: 0x7f9e93685030
 
 	  //cout<<"Flags 7: "<< (gen_statusFlags.at(imc)>>7)&1 <<", Flags 8:"<< (gen_statusFlags.at(imc)>>8)&1 << endl;
 
-	  //GenParticle Status: 0: null entry, 1: particle not decayed or fragmented, represents the final state as given by the generator, 2: decayed or fragmented entry.
-	  //if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;//6: top, 23: Z boson, 24: W boson, 25: Higgs, 1e6<: SUSY particle ---> matching condition is final state Jets.
+	  if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;//6: top, 23: Z boson, 24: W boson, 25: Higgs, 1e6<: SUSY particle ---> matching condition is final state Jets.
           GenLV_.SetPtEtaPhiM(gen_pt.at(imc), gen_eta.at(imc), gen_phi.at(imc), gen_m.at(imc));
 	  float dR = JetLV_.DeltaR(GenLV_);//dR=sqrt(dphi^2+deta^2)
 	  if(dR<0.3){
 	    matched = true;
 	    matched_tr = matched;
-	    //break;
 	  }
 	  histo_dR->Fill(dR);
         }

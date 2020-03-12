@@ -875,11 +875,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 	if(jets_id.at(ijet)==0) continue;
 	if(jets_islep.at(ijet)==1) continue;
 
-	/*if(jets_pt.at(iJ)<30)    continue;
-     	if(abs(Jet_eta[iJ])>2.4)   continue;
-     	if(!jetid)                 continue;
-      	if(jetislep)               continue;*/
-
         JetLV_.SetPtEtaPhiM(jets_pt.at(ijet), jets_eta.at(ijet), jets_phi.at(ijet), jets_m.at(ijet));
 
         for(size_t imc(0); imc < gen_pt.size(); imc++){

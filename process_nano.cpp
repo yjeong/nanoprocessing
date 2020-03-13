@@ -865,7 +865,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     }
 
     if(!isData){//number of ISR-->TTbar_Madgraph, signal.
-      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_HT") && inputfile.Contains("madgraphMLM")))) continue;
+      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
@@ -899,7 +899,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       histo_dR->GetXaxis()->SetTitle("dR distribution");
 
       float w_isr = 1.;
-      const float isr_norm_tt =1.117;
+      float isr_norm_tt = 0;
+      if((inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM"))) isr_norm_tt =1.117;
+      else if(inputfile.Contains("SMS-T1tbs_RPV")) isr_norm_tt = 1;
+
       float isr_wgt     = -999.;
       if(nisr==0)       isr_wgt = 1.; 
       else if(nisr==1)  isr_wgt = 0.920; 

@@ -900,7 +900,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
 
       float w_isr = 1.;
       float isr_norm_tt = 0;
-      if((inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM"))) isr_norm_tt =1.117;
+      if((inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM"))) isr_norm_tt =1.101;
       else if(inputfile.Contains("SMS-T1tbs_RPV")) isr_norm_tt = 1;
 
       float isr_wgt     = -999.;

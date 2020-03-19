@@ -329,6 +329,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   float w_isr_tr    =0;
   float isr_wgt_tr  =0;
   float isr_norm_tt_tr =0;
+  float ht_isr_tr = 0;
   int nisr_tr = 0;
 
   //std::vector<float> w_pdf;
@@ -470,6 +471,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("isr_norm_tt_tr",	&isr_norm_tt_tr);
   babyTree_->Branch("nisr_tr",		&nisr_tr);
   babyTree_->Branch("matched_tr",	&matched_tr);
+  babyTree_->Branch("ht_isr_tr",	&ht_isr_tr);
   // leptons 
   babyTree_->Branch("nleps",       	  &nleps);    
   babyTree_->Branch("leps_pt",       	&leps_pt);    
@@ -569,6 +571,10 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     met_phi    =   -1;
     ntrupv        =   0;
     ntrupv_mean   =   0;
+    isr_wgt_tr	  =    1;
+    isr_norm_tt_tr=    1;
+    nisr_tr	  =    0;
+    ht_isr_tr	  =    0;
     // weights 
     weight        =    1;
     w_lumi        =    1;
@@ -576,9 +582,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     w_btag_dcsv   =    1;
     w_pu          =    1;
     w_isr_tr	  =    1;
-    isr_wgt_tr	  =    1;
-    isr_norm_tt_tr=    1;
-    nisr_tr	  =    0;
     // leptons 
     nleps      =   0;       	  
     leps_pt.clear();       	
@@ -920,6 +923,19 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     }
     h3->GetXaxis()->SetTitle("njet");
     h3->GetYaxis()->SetTitle("nisr");
+
+    if(!isData){
+      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
+      float ht_isr = 0.;
+      for(size_t igen=0; igen<gen_pt.size();igen++){
+        if((gen_PartIdxMother.at(igen))==-1) continue;
+	int momid = abs(gen_pdgId.at(gen_PartIdxMother.at(igen)));
+	if(gen_status.at(igen)==1 && (gen_pdgId.at(igen)<6 || gen_pdgId.at(igen)==21) && momid!=6 && momid!=23 && momid!=24 && momid!=25){
+	  ht_isr += gen_pt.at(igen);
+	  ht_isr_tr = ht_isr;
+	}
+      }
+    }
 
     // 
     // weights 

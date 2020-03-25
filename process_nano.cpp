@@ -868,7 +868,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     }
 
     if(!isData){//number of ISR-->TTbar_Madgraph, signal.
-      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
       int nisr(0);
       TLorentzVector JetLV_, GenLV_; 
       for(size_t ijet(0); ijet<jets_pt.size(); ijet++){
@@ -925,7 +924,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     h3->GetYaxis()->SetTitle("nisr");
 
     if(!isData){
-      if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
+      //if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
       float ht_isr = 0.;
       for(size_t igen=0; igen<gen_pt.size();igen++){
         if((gen_PartIdxMother.at(igen))==-1) continue;
@@ -954,7 +953,8 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       w_lumi      = 1;
       w_pu        = 1;
     }
-    weight    = w_btag_dcsv * w_lumi * w_pu * w_isr_tr;
+    if ((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") )) weight = w_btag_dcsv * w_lumi * w_pu * w_isr_tr;
+    else if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") ))) weight = w_btag_dcsv * w_lumi * w_pu;
 
     // filters and triggers 
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2

@@ -924,7 +924,6 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     h3->GetYaxis()->SetTitle("nisr");
 
     if(!isData){
-      //if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") && inputfile.Contains("madgraphMLM")))) continue;
       float ht_isr = 0.;
       for(size_t igen=0; igen<gen_pt.size();igen++){
         if((gen_PartIdxMother.at(igen))==-1) continue;

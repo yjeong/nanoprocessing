@@ -919,14 +919,16 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     h3->GetYaxis()->SetTitle("nisr");
 
     if(!isData){
+    float genHT(0);
       for(size_t igen=0; igen<gen_pt.size();igen++){
         if((gen_PartIdxMother.at(igen))==-1) continue;
 	int momid = abs(gen_pdgId.at(gen_PartIdxMother.at(igen)));
 	if(!((gen_statusFlags.at(igen)>>7)&1) || abs(gen_pdgId.at(igen))>5) continue;
 	if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue;// */
 	//if(!(gen_status.at(igen)==1 && abs((gen_pdgId.at(igen))<6 || abs(gen_pdgId.at(igen))==21) && momid!=6 && momid!=23 && momid!=24 && momid!=25)) continue;
-	ht_isr += gen_pt.at(igen);
+	genHT+=gen_pt.at(igen);
       }
+    ht_isr = genHT;
     }
 
     // 

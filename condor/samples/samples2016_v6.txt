@@ -31,8 +31,8 @@ WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMori
 WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
 
 ## SingleTop
-ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
-ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
+ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
+ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
 ST_s-channel_4f_InclusiveDecays_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
 ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
 ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7_ext1-v1	
@@ -120,11 +120,11 @@ SMS-T1tbs_RPV_mGluino2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMo
 SMS-T1tbs_RPV_mGluino2200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMoriond17_Nano25Oct2019_102X_mcRun2_asymptotic_v7-v1	
 
 ## data
-Run2016B_ver1/JetHT/NANOAOD/Nano25Oct2019_ver1-v1	
-Run2016B_ver2/JetHT/NANOAOD/Nano25Oct2019_ver2-v1	
-Run2016C/JetHT/NANOAOD/Nano25Oct2019-v1	
-Run2016D/JetHT/NANOAOD/Nano25Oct2019-v1	
-Run2016E/JetHT/NANOAOD/Nano25Oct2019-v1	
-Run2016F/JetHT/NANOAOD/Nano25Oct2019-v1	
-Run2016G/JetHT/NANOAOD/Nano25Oct2019-v1	
-Run2016H/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016B_ver1/JetHT/NANOAOD/Nano25Oct2019_ver1-v1	
+/xrootd/store/data/Run2016B_ver2/JetHT/NANOAOD/Nano25Oct2019_ver2-v1	
+/xrootd/store/data/Run2016C/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016D/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016E/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016F/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016G/JetHT/NANOAOD/Nano25Oct2019-v1	
+/xrootd/store/data/Run2016H/JetHT/NANOAOD/Nano25Oct2019-v1	

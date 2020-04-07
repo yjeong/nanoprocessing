@@ -352,6 +352,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   bool pass=true;
   bool fromGS;
   bool matched_tr;
+  bool stitch_ht = false;
   /*
   //MC   
   int ntruleps;
@@ -465,6 +466,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
   babyTree_->Branch("met",             	&met);
   babyTree_->Branch("met_phi",        	&met_phi);
   babyTree_->Branch("lhe_ht",		&lhe_ht);
+  babyTree_->Branch("stitch_ht",	&stitch_ht);
   // weights 
   babyTree_->Branch("weight",    	    &weight);
   babyTree_->Branch("w_btag_csv",    	&w_btag_csv);
@@ -642,6 +644,7 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
     trig_ht1050=true;
     trig_isomu24=true;
     trig_isomu27=true;
+    stitch_ht=false;
 
     // apply json in data
     if(isData && !inJSON(VRunLumi,run,ls)) continue;
@@ -957,11 +960,12 @@ void process_nano(TString inputfile, TString outputdir, float sumWeights, TStrin
       w_pu        = 1;
     }
     if ((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") )) weight = w_btag_dcsv * w_lumi * w_pu * w_isr_tr;
-    else if(!((inputfile.Contains("SMS-T1tbs_RPV")) || (inputfile.Contains("TTJets_") ))){
+    else {
       weight = w_btag_dcsv * w_lumi * w_pu;
       w_isr_tr = 1;
     }
-    if(!(inputfile.Contains("TTJets_"))) lhe_ht = 1;
+    if(inputfile.Contains("TTJets_Tune") && lhe_ht < 600) stitch_ht = true;
+    else if(!(inputfile.Contains("TTJets_Tune"))) stitch_ht = false;
 
     // filters and triggers 
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2

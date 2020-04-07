@@ -73,8 +73,7 @@ void skimonefile(TString inputfile, TString outputdir, TString skim)
 		skimcut="nbm>0&&mj12>500&&njets>=4";
 	}
 	else if(skim=="rpvfitnbge0") {
-		if(inputfile.Contains("TTJets_Tune")) skimcut="ht>1200&&mj12>500&&njets>=4&&lhe_ht<600";
-		else skimcut="ht>1200&&mj12>500&&njets>=4";
+		skimcut="ht>1200&&mj12>500&&njets>=4";
 	}
 	else if(skim=="ht1000") {
 		skimcut="ht>1000";

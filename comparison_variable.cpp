@@ -31,11 +31,14 @@ void comparison_variable(){
 	TH1F *h[Sample_Num];
 	TTree *tree_[Sample_Num];
 	TCanvas *c;
+	c = new TCanvas;
 
 	float ht, mj12, w_lumi;
 	int njets, nbm;
+	double ymax = 0;
+	double norm_1 = 1, norm_2 = 1;
 
-	TString variable = "njets";
+	TString variable = "NJets";
 
 	TString inputdir, outputdir;
 	inputdir = "/cms/scratch/yjeong/";
@@ -51,7 +54,7 @@ void comparison_variable(){
 	}
 
 	for(int i=0; i<Sample_Num; i++){
-		h[i] = new TH1F(Form("h2_%d",i),Form("var_%d",i),10,0,18);
+		h[i] = new TH1F(Form("h_%d",i),Form("var_%d",i),10,0,18);
 		tree_[i] = (TTree*)tfile[i]->Get("tree");
 		tree_[i]->SetBranchAddress("ht",&ht);
 		tree_[i]->SetBranchAddress("mj12",&mj12);
@@ -59,12 +62,28 @@ void comparison_variable(){
 		tree_[i]->SetBranchAddress("njets",&njets);
 		tree_[i]->SetBranchAddress("nbm",&nbm);
 
-		for(int j=0; j<tree[i]->GetEntries(); j++){
-			tree[i]->GetEntry(j);
+		//for(int j=0; j<tree[i]->GetEntries(); j++){
+		for(int j=0; j<10000; j++){
+			tree_[i]->GetEntry(j);
 			h[i]->Fill(njets,w_lumi);
 		}
+
+		if(i==0){
+			norm_1 = h[i]->Integral();
+			h[i]->Scale(1/norm_1);
+		}
+		if(i==1){
+			norm_2 = h[i]->Integral();
+			h[i]->Scale(1/norm_2);
+		}
+
+		if(i==0){
+			ymax = h[i]->GetMaximum();
+			h[i]->SetMaximum(ymax*2);
+		}
+		c->cd();
 		if(i==0)h[i]->Draw();
-		if(i==1)h[i]->Draw("histsame");
-		c->SaveAs(outputdir+variable+".png");
+		else if(i>0)h[i]->Draw("same");
 	}
+	c->SaveAs(outputdir+variable+".png");
 }

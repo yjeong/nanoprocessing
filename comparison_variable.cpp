@@ -14,14 +14,26 @@ void set_histo_ratio(TH1F *histo_Ratio){
 	histo_Ratio->SetAxisRange(0.5,1.5,"y");
 }
 
-void set_legend_style(TLegend *l1){
-	l1->SetFillColor(0);
-	l1->SetLineColor(0);
-	l1->SetLineStyle(kSolid);
-	l1->SetLineWidth(1);
-	l1->SetFillStyle(1001);
-	l1->SetTextFont(42);
-	l1->SetTextSize(0.045);
+void set_legend_style(TLegend *le){
+	le->SetFillColor(0);
+	le->SetLineColor(0);
+	le->SetLineStyle(kSolid);
+	le->SetLineWidth(1);
+	le->SetFillStyle(1001);
+	le->SetTextFont(42);
+	le->SetTextSize(0.045);
+}
+
+void set_hist_style_1(TH1F *h_1){
+	h_1->SetLineColor(1);
+	h_1->SetLineStyle(1);
+	h_1->SetLineWidth(1.2);
+}
+
+void set_hist_style_2(TH1F *h_2){
+	h_2->SetLineColor(2);
+	h_2->SetLineStyle(0);
+	h_2->SetLineWidth(1);
 }
 
 void comparison_variable(){
@@ -29,16 +41,33 @@ void comparison_variable(){
 	const int Sample_Num = 2;
 	TFile *tfile[Sample_Num];
 	TH1F *h[Sample_Num];
+	TH1F *h1[Sample_Num];
+	TH1F *h2[Sample_Num];
+	TH1F *h3[Sample_Num];
 	TTree *tree_[Sample_Num];
 	TCanvas *c;
 	c = new TCanvas;
+	c->Divide(2,2);
 
-	float ht, mj12, w_lumi;
+	TLegend *l;
+	TLegend *l1;
+	TLegend *l2;
+	TLegend *l3;
+
+	l = new TLegend(0.65,0.54,0.75,0.8);
+	set_legend_style(l);
+	l1 = new TLegend(0.65,0.54,0.75,0.8);
+	set_legend_style(l1);
+	l2 = new TLegend(0.65,0.54,0.75,0.8);
+	set_legend_style(l2);
+	l3 = new TLegend(0.65,0.54,0.75,0.8);
+	set_legend_style(l3);
+
+	float ht, mj12, w_lumi, weight;
 	int njets, nbm;
 	double ymax = 0;
-	double norm_1 = 1, norm_2 = 1;
-
-	TString variable = "NJets";
+	double norm_1 = 1, norm_2 = 1, norm_3 = 1, norm_4 = 1;
+	double norm_5 = 1, norm_6 = 1, norm_7 = 1, norm_8 = 1;
 
 	TString inputdir, outputdir;
 	inputdir = "/cms/scratch/yjeong/";
@@ -54,36 +83,95 @@ void comparison_variable(){
 	}
 
 	for(int i=0; i<Sample_Num; i++){
-		h[i] = new TH1F(Form("h_%d",i),Form("var_%d",i),10,0,18);
+		h[i] = new TH1F(Form("h_%d",i),Form("NJets_%d",i),10,0,18);
+		h1[i] = new TH1F(Form("h1_%d",i),Form("mj12_%d",i),50,0,3500);
+		h2[i] = new TH1F(Form("h2_%d",i),Form("nbm_%d",i),9,0,9);
+		h3[i] = new TH1F(Form("h3_%d",i),Form("ht_%d",i),50,0,8000);
+
 		tree_[i] = (TTree*)tfile[i]->Get("tree");
 		tree_[i]->SetBranchAddress("ht",&ht);
 		tree_[i]->SetBranchAddress("mj12",&mj12);
 		tree_[i]->SetBranchAddress("w_lumi",&w_lumi);
 		tree_[i]->SetBranchAddress("njets",&njets);
 		tree_[i]->SetBranchAddress("nbm",&nbm);
+		tree_[i]->SetBranchAddress("weight",&weight);
 
-		//for(int j=0; j<tree[i]->GetEntries(); j++){
-		for(int j=0; j<10000; j++){
+		for(int j=0; j<tree[i]->GetEntries(); j++){
+		//for(int j=0; j<10000; j++){
 			tree_[i]->GetEntry(j);
 			h[i]->Fill(njets,w_lumi);
+			h1[i]->Fill(mj12,w_lumi);
+			h2[i]->Fill(nbm,w_lumi);
+			h3[i]->Fill(ht,w_lumi);
 		}
 
 		if(i==0){
+			set_hist_style_1(h[i]);
+			set_hist_style_1(h1[i]);
+			set_hist_style_1(h2[i]);
+			set_hist_style_1(h3[i]);
 			norm_1 = h[i]->Integral();
 			h[i]->Scale(1/norm_1);
+			norm_2 = h1[i]->Integral();
+			h1[i]->Scale(1/norm_2);
+			norm_3 = h2[i]->Integral();
+			h2[i]->Scale(1/norm_3);
+			norm_4 = h3[i]->Integral();
+			h3[i]->Scale(1/norm_4);
+			l->AddEntry(h[i],"MiniAOD");
+			l1->AddEntry(h1[i],"MiniAOD");
+			l2->AddEntry(h2[i],"MiniAOD");
+			l3->AddEntry(h3[i],"MiniAOD");
 		}
 		if(i==1){
-			norm_2 = h[i]->Integral();
-			h[i]->Scale(1/norm_2);
+			set_hist_style_2(h[i]);
+			set_hist_style_2(h1[i]);
+			set_hist_style_2(h2[i]);
+			set_hist_style_2(h3[i]);
+			norm_5 = h[i]->Integral();
+			h[i]->Scale(1/norm_5);
+			norm_6 = h1[i]->Integral();
+			h1[i]->Scale(1/norm_6);
+			norm_7 = h2[i]->Integral();
+			h2[i]->Scale(1/norm_7);
+			norm_8 = h3[i]->Integral();
+			h3[i]->Scale(1/norm_8);
+			l->AddEntry(h[i],"NanoAOD");
+			l1->AddEntry(h1[i],"NanoAOD");
+			l2->AddEntry(h2[i],"NanoAOD");
+			l3->AddEntry(h3[i],"NanoAOD");
 		}
 
 		if(i==0){
 			ymax = h[i]->GetMaximum();
 			h[i]->SetMaximum(ymax*2);
+			ymax = h1[i]->GetMaximum();
+			h1[i]->SetMaximum(ymax*2);
+			ymax = h2[i]->GetMaximum();
+			h2[i]->SetMaximum(ymax*2);
+			ymax = h3[i]->GetMaximum();
+			h3[i]->SetMaximum(ymax*2);
 		}
-		c->cd();
+		c->cd(1);
+		l->Draw();
 		if(i==0)h[i]->Draw();
 		else if(i>0)h[i]->Draw("same");
+
+		c->cd(2);
+		l1->Draw();
+		if(i==0)h1[i]->Draw();
+		else if(i>0)h1[i]->Draw("same");
+
+		c->cd(3);
+		l2->Draw();
+		if(i==0)h2[i]->Draw();
+		else if(i>0)h2[i]->Draw("same");
+
+		c->cd(4);
+		l3->Draw();
+		if(i==0)h3[i]->Draw();
+		else if(i>0)h3[i]->Draw("same");
+
 	}
-	c->SaveAs(outputdir+variable+".png");
+	c->SaveAs(outputdir+"w_lumi.png");
 }

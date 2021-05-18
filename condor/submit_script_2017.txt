@@ -20,6 +20,8 @@ condor_submit condor_SMS-T1tbs_RPV_mGluino1300_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino1400_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino1600_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino1700_TuneCP2.jds
+condor_submit condor_SMS-T1tbs_RPV_mGluino1800_TuneCP2.jds
+condor_submit condor_SMS-T1tbs_RPV_mGluino1900_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino2000_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino2100_TuneCP2.jds
 condor_submit condor_SMS-T1tbs_RPV_mGluino2200_TuneCP2.jds

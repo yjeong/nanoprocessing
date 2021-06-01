@@ -36,6 +36,10 @@ condor_submit condor_SingleMuonRun2017C.jds
 condor_submit condor_SingleMuonRun2017D.jds
 condor_submit condor_SingleMuonRun2017E.jds
 condor_submit condor_SingleMuonRun2017F.jds
+condor_submit condor_TTJets_HT-1200to2500_TuneCP5.jds
+condor_submit condor_TTJets_HT-2500toInf_TuneCP5.jds
+condor_submit condor_TTJets_HT-600to800_TuneCP5.jds
+condor_submit condor_TTJets_HT-800to1200_TuneCP5.jds
 condor_submit condor_TTJets_TuneCP5.jds
 condor_submit condor_TTTT_TuneCP5.jds
 condor_submit condor_TTWJetsToLNu_TuneCP5.jds

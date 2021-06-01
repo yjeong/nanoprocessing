@@ -46,7 +46,6 @@ condor_submit condor_TTWJetsToQQ_TuneCP5.jds
 condor_submit condor_TTZToLLNuNu_M-10_TuneCP5.jds
 condor_submit condor_TTZToQQ_TuneCP5.jds
 condor_submit condor_WJetsToLNu_HT-1200To2500_TuneCP5.jds
-condor_submit condor_WJetsToLNu_HT-200To400_TuneCP5.jds
 condor_submit condor_WJetsToLNu_HT-2500ToInf_TuneCP5.jds
 condor_submit condor_WJetsToLNu_HT-400To600_TuneCP5.jds
 condor_submit condor_WJetsToLNu_HT-600To800_TuneCP5.jds

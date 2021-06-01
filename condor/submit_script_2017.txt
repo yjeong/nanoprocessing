@@ -1,5 +1,8 @@
-condor_submit condor_DYJetsToLL_M-10to50_TuneCP5.jds
-condor_submit condor_DYJetsToLL_M-50_TuneCP5.jds
+condor_submit condor_DYJetsToLL_M-50_HT-1200to2500_TuneCP5.jds
+condor_submit condor_DYJetsToLL_M-50_HT-2500toInf_TuneCP5.jds
+condor_submit condor_DYJetsToLL_M-50_HT-400to600_TuneCP5.jds
+condor_submit condor_DYJetsToLL_M-50_HT-600to800_TuneCP5.jds
+condor_submit condor_DYJetsToLL_M-50_HT-800to1200_TuneCP5.jds
 condor_submit condor_JetHTRun2017B.jds
 condor_submit condor_JetHTRun2017C.jds
 condor_submit condor_JetHTRun2017D.jds

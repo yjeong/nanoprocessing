@@ -20,13 +20,9 @@ agent_load_env
 #    ssh-add
 #fi
 
-
 # Source global definitions
-
 if [ -f /etc/bashrc ]; then
-
 	. /etc/bashrc
-
 fi
 
 # User specific aliases and functions
@@ -45,9 +41,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-
 #source ~/ROOT/root/bin/thisroot.sh
-
 
 alias root='root -l'
 alias rootb='root -b -q'
@@ -123,7 +117,6 @@ alias utils='utils/tdr --style=note b'
 alias nfiles='ls -lh | grep ^- | wc -l'
 
 #alias python='python3'
-
 
 export PATH=/bin:/usr/bin:/usr/local/bin:/cms/ldap_home/yjeong/tools/fastjet-install/bin:/usr/texbin/:/opt/pdflabs/pdftk/bin/$PATH
 export PATH=/cms/ldap_home/yjeong/anaconda3/bin:$PATH
